@@ -19,30 +19,153 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="First View" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KQZ-1w-vlD">
-                                <rect key="frame" x="112.5" y="312" width="150.5" height="43"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loaded by FirstViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A5M-7J-77L">
-                                <rect key="frame" x="90.5" y="363" width="194.5" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qjj-vG-Nvj">
+                                <rect key="frame" x="0.0" y="-14.5" width="375" height="667"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PYb-Ln-4fi" userLabel="UpperView">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="133.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log File Format" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wWh-Og-ugD" userLabel="PickerLabel">
+                                                <rect key="frame" x="-0.5" y="-1" width="375" height="134"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="wWh-Og-ugD" firstAttribute="centerY" secondItem="PYb-Ln-4fi" secondAttribute="centerY" id="FaK-LD-e0n"/>
+                                            <constraint firstItem="wWh-Og-ugD" firstAttribute="height" secondItem="PYb-Ln-4fi" secondAttribute="height" id="GCa-oB-CRv"/>
+                                            <constraint firstItem="wWh-Og-ugD" firstAttribute="width" secondItem="PYb-Ln-4fi" secondAttribute="width" id="VNZ-Ka-WRT"/>
+                                            <constraint firstItem="wWh-Og-ugD" firstAttribute="centerX" secondItem="PYb-Ln-4fi" secondAttribute="centerX" id="j7h-hS-F3r"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1sd-gy-jF4" userLabel="PickerContainer">
+                                        <rect key="frame" x="0.0" y="133.5" width="375" height="133.5"/>
+                                        <subviews>
+                                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bc0-Fp-HiW">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="133"/>
+                                            </pickerView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="bc0-Fp-HiW" firstAttribute="centerX" secondItem="1sd-gy-jF4" secondAttribute="centerX" id="1Hu-Op-2xA"/>
+                                            <constraint firstItem="bc0-Fp-HiW" firstAttribute="height" secondItem="1sd-gy-jF4" secondAttribute="height" id="3NO-qP-R7A"/>
+                                            <constraint firstItem="bc0-Fp-HiW" firstAttribute="centerY" secondItem="1sd-gy-jF4" secondAttribute="centerY" id="CjO-gE-7ef"/>
+                                            <constraint firstItem="bc0-Fp-HiW" firstAttribute="width" secondItem="1sd-gy-jF4" secondAttribute="width" id="Tag-w0-avu"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6BV-lN-2pO" userLabel="BufferView">
+                                        <rect key="frame" x="0.0" y="267" width="375" height="133"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Logging Interval" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgt-a6-CwV" userLabel="SliderLabel">
+                                                <rect key="frame" x="0.0" y="55" width="375" height="23"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="wgt-a6-CwV" firstAttribute="centerX" secondItem="6BV-lN-2pO" secondAttribute="centerX" id="3te-5v-i8y"/>
+                                            <constraint firstItem="wgt-a6-CwV" firstAttribute="width" secondItem="6BV-lN-2pO" secondAttribute="width" id="DEW-ts-G07"/>
+                                            <constraint firstItem="wgt-a6-CwV" firstAttribute="centerY" secondItem="6BV-lN-2pO" secondAttribute="centerY" id="SR2-Bt-BZe"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dZf-Ko-ipv" userLabel="SliderView">
+                                        <rect key="frame" x="0.0" y="400" width="375" height="133.5"/>
+                                        <subviews>
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="60" minValue="1" maxValue="600" translatesAutoresizingMaskIntoConstraints="NO" id="BrU-xT-E1v" userLabel="logIntervalSlider">
+                                                <rect key="frame" x="17" y="0.5" width="341.5" height="134.5"/>
+                                                <connections>
+                                                    <action selector="sliderValueChanged:" destination="9pv-A4-QxB" eventType="valueChanged" id="jh3-Nn-Hs6"/>
+                                                </connections>
+                                            </slider>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="BrU-xT-E1v" firstAttribute="height" secondItem="dZf-Ko-ipv" secondAttribute="height" id="6rg-lt-0Wf"/>
+                                            <constraint firstItem="BrU-xT-E1v" firstAttribute="centerY" secondItem="dZf-Ko-ipv" secondAttribute="centerY" id="8DY-aH-81n"/>
+                                            <constraint firstItem="BrU-xT-E1v" firstAttribute="centerX" secondItem="dZf-Ko-ipv" secondAttribute="centerX" id="LPA-a6-GhL"/>
+                                            <constraint firstItem="BrU-xT-E1v" firstAttribute="width" secondItem="dZf-Ko-ipv" secondAttribute="width" multiplier="0.9" id="eDn-8i-Fv7"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w9f-0e-HTt" userLabel="BottomView">
+                                        <rect key="frame" x="0.0" y="533.5" width="375" height="133.5"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dEL-I5-5sm">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="133.5"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gPi-Mq-ooj" userLabel="labelView">
+                                                        <rect key="frame" x="0.0" y="0.0" width="281.5" height="133.5"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log Interval (seconds) =" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KbA-KA-dn7" userLabel="Logging Interval (seconds) = ">
+                                                                <rect key="frame" x="48" y="56.5" width="185.5" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstItem="KbA-KA-dn7" firstAttribute="centerY" secondItem="gPi-Mq-ooj" secondAttribute="centerY" id="VKN-ru-uLu"/>
+                                                            <constraint firstItem="KbA-KA-dn7" firstAttribute="centerX" secondItem="gPi-Mq-ooj" secondAttribute="centerX" id="yPu-dO-9ee"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c9d-IK-Yh5" userLabel="labelValueView">
+                                                        <rect key="frame" x="281.5" y="0.0" width="93.5" height="133.5"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vhf-d4-g31" userLabel="logIntervalLabel">
+                                                                <rect key="frame" x="25.5" y="56.5" width="42" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstItem="Vhf-d4-g31" firstAttribute="centerY" secondItem="c9d-IK-Yh5" secondAttribute="centerY" id="eoH-T9-WIP"/>
+                                                            <constraint firstItem="Vhf-d4-g31" firstAttribute="centerX" secondItem="c9d-IK-Yh5" secondAttribute="centerX" id="kwh-yJ-xpS"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="gPi-Mq-ooj" firstAttribute="width" secondItem="c9d-IK-Yh5" secondAttribute="width" multiplier="3" id="d0D-5T-eY3"/>
+                                                </constraints>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="dEL-I5-5sm" firstAttribute="height" secondItem="w9f-0e-HTt" secondAttribute="height" id="9Gr-1E-MbA"/>
+                                            <constraint firstItem="dEL-I5-5sm" firstAttribute="centerY" secondItem="w9f-0e-HTt" secondAttribute="centerY" id="Yz5-jw-5EH"/>
+                                            <constraint firstItem="dEL-I5-5sm" firstAttribute="centerX" secondItem="w9f-0e-HTt" secondAttribute="centerX" id="jVP-8N-WJ0"/>
+                                            <constraint firstItem="dEL-I5-5sm" firstAttribute="width" secondItem="w9f-0e-HTt" secondAttribute="width" id="xeE-tE-4t6"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="6BV-lN-2pO" firstAttribute="height" secondItem="PYb-Ln-4fi" secondAttribute="height" id="8bk-8C-1p1"/>
+                                    <constraint firstItem="1sd-gy-jF4" firstAttribute="height" secondItem="PYb-Ln-4fi" secondAttribute="height" id="Tx3-BQ-VtQ"/>
+                                    <constraint firstItem="dZf-Ko-ipv" firstAttribute="height" secondItem="6BV-lN-2pO" secondAttribute="height" id="rwq-7A-wvW"/>
+                                    <constraint firstItem="w9f-0e-HTt" firstAttribute="height" secondItem="dZf-Ko-ipv" secondAttribute="height" id="wiF-dt-tgU"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="KQZ-1w-vlD" secondAttribute="centerX" id="6BV-lF-sBN"/>
-                            <constraint firstItem="A5M-7J-77L" firstAttribute="top" secondItem="KQZ-1w-vlD" secondAttribute="bottom" constant="8" symbolic="YES" id="cfb-er-3JN"/>
-                            <constraint firstItem="A5M-7J-77L" firstAttribute="centerX" secondItem="KQZ-1w-vlD" secondAttribute="centerX" id="e1l-AV-tCB"/>
-                            <constraint firstAttribute="centerY" secondItem="KQZ-1w-vlD" secondAttribute="centerY" id="exm-UA-ej4"/>
+                            <constraint firstItem="qjj-vG-Nvj" firstAttribute="height" secondItem="tsR-hK-woN" secondAttribute="height" id="4lB-V0-XdK"/>
+                            <constraint firstItem="qjj-vG-Nvj" firstAttribute="width" secondItem="tsR-hK-woN" secondAttribute="width" id="TyA-ve-4Vo"/>
+                            <constraint firstItem="qjj-vG-Nvj" firstAttribute="centerY" secondItem="PQr-Ze-W5v" secondAttribute="centerY" id="ab4-n2-7NP"/>
+                            <constraint firstItem="qjj-vG-Nvj" firstAttribute="centerX" secondItem="PQr-Ze-W5v" secondAttribute="centerX" id="rpC-mu-yYt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="First" image="first" id="acW-dT-cKf"/>
+                    <connections>
+                        <outlet property="logFormatPicker" destination="bc0-Fp-HiW" id="ZKA-jK-mxG"/>
+                        <outlet property="logIntervalLabel" destination="Vhf-d4-g31" id="DTJ-Wv-m49"/>
+                        <outlet property="logIntervalSlider" destination="BrU-xT-E1v" id="UFJ-o4-55A"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
