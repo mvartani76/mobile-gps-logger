@@ -15,17 +15,29 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     @IBOutlet weak var toggleLoggingButton: UIButton!
     @IBOutlet weak var latLabel: UILabel!
     @IBOutlet weak var lonLabel: UILabel!
+    @IBOutlet weak var logIntervalLabel: UILabel!
     
     var locationManager:CLLocationManager!
+    
     var dataCount = 0
     var timer = Timer()
     var outputString = ""
     var startLogging = false
+    var logInterval: Int?
+    var logFormat: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         determineMyCurrentLocation()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+
+        let tabBar = tabBarController as! BaseTabBarController
+        logInterval = tabBar.logInterval
+        logFormat = tabBar.logFormat
+        logIntervalLabel.text = String(describing: logInterval!)
     }
 
     @objc func determineMyCurrentLocation() {
@@ -51,7 +63,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
         
         if toggleLoggingButton.isSelected {
             startLogging = true
-            startLogging(logFormat: "GPX", logInterval: 1)
+            startLogging(logFormat: logFormat!, logInterval: 120)
         }
         else {
             startLogging = false
@@ -60,15 +72,16 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     }
     
     func startLogging(logFormat: String, logInterval: Int) {
-        outputString = startXMLString(logFormat: "GPX")
+        outputString = startXMLString(logFormat: logFormat)
         runTimer(timeInterval: Double(logInterval))
     }
+    
     func stopLogging() {
         // stop the timer
         timer.invalidate()
         // finish writing the string
         outputString = finishDataWriteToString(stringName: outputString)
-        writeStringToFile(inputString: outputString, logFormat: "GPX")
+        writeStringToFile(inputString: outputString, logFormat: logFormat!)
     }
     
     func updateToggleButton(button: UIButton, stateOneColor: UIColor, stateOneText: String, stateTwoColor: UIColor, stateTwoText: String) {

@@ -17,14 +17,26 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     var logFormatDataSource = ["gpx", "kml"]
     
+    var logInterval = 300
+    var logFormat = "gpx"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         logFormatPicker.delegate = self
         logFormatPicker.dataSource = self
+        
         let currentSliderValue = Int(logIntervalSlider.value)
         logIntervalLabel.text = "\(currentSliderValue)"
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        let tabBar = tabBarController as! BaseTabBarController
+        
+        tabBar.logInterval = logInterval
+        tabBar.logFormat = logFormat
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -39,12 +51,12 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         print(logFormatDataSource[row])
+        logFormat = logFormatDataSource[row]
     }
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         let currentValue = Int(sender.value)
         logIntervalLabel.text = "\(currentValue)"
+        logInterval = currentValue
     }
-    
 }
-

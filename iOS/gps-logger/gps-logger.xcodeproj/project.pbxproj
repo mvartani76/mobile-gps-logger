@@ -13,6 +13,7 @@
 		220044072129F9A10038F42C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 220044052129F9A10038F42C /* Main.storyboard */; };
 		220044092129F9A20038F42C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 220044082129F9A20038F42C /* Assets.xcassets */; };
 		2200440C2129F9A20038F42C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2200440A2129F9A20038F42C /* LaunchScreen.storyboard */; };
+		2258EF1A212B337500BE1168 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2258EF19212B337500BE1168 /* BaseTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		220044082129F9A20038F42C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2200440B2129F9A20038F42C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2200440D2129F9A20038F42C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2258EF19212B337500BE1168 /* BaseTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				220044012129F9A10038F42C /* SettingsViewController.swift */,
 				220044032129F9A10038F42C /* GPSLoggerViewController.swift */,
 				220044052129F9A10038F42C /* Main.storyboard */,
+				2258EF19212B337500BE1168 /* BaseTabBarController.swift */,
 				220044082129F9A20038F42C /* Assets.xcassets */,
 				2200440A2129F9A20038F42C /* LaunchScreen.storyboard */,
 				2200440D2129F9A20038F42C /* Info.plist */,
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2258EF1A212B337500BE1168 /* BaseTabBarController.swift in Sources */,
 				220044042129F9A10038F42C /* GPSLoggerViewController.swift in Sources */,
 				220044002129F9A10038F42C /* AppDelegate.swift in Sources */,
 				220044022129F9A10038F42C /* SettingsViewController.swift in Sources */,
