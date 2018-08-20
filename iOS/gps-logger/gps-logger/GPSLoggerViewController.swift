@@ -124,30 +124,10 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
             mailComposer.setSubject("iOS Device GPS Logs")
             mailComposer.setMessageBody("Please see attached log file.", isHTML: false)
            
-            //let path = Bundle.main.path(forResource: "log", ofType: "gpx")
-            //let path = Bundle.main.path(forResource: "log.gpx", ofType: "text/plain")
             let path = getDocumentsDirectory().appendingPathComponent("log.gpx")
             let fileData = NSData(contentsOf: path)
             mailComposer.addAttachmentData(fileData! as Data, mimeType: "application/gpx", fileName: "log")
-            /*
-            do {
-                let content = try String(contentsOfFile: path)
-                print(content)
-            }
-            catch {
-                print("nope")
-            }
-            */
-            /*
-            if let filePath = Bundle.main.path(forResource: "log.gpx", ofType: "gpx") {
-                print("File path loaded.")
-                
-                if let fileData = NSData(contentsOfFile: filePath) {
-                    print("File data loaded.")
-                    mailComposer.addAttachmentData(fileData as Data, mimeType: "audio/wav", fileName: "swifts")
-                }
-            }
-            */
+
             self.present(mailComposer, animated: true, completion: nil)
         }
     }
@@ -158,7 +138,6 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     
     func writeStringToFile(inputString: String, logFormat: String) {
         // Set the file path
-        //let path = "log.gpx"
         let path = getDocumentsDirectory().appendingPathComponent("log.gpx")
         
         // Set the contents
