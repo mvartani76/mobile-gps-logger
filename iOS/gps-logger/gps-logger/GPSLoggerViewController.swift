@@ -19,6 +19,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
     var dataCount = 0
     var timer = Timer()
     var outputString = ""
+    var startLogging = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,9 +49,11 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
                            stateTwoText: "Start Logging")
         
         if toggleLoggingButton.isSelected {
+            startLogging = true
             startLogging(logFormat: "GPX", logInterval: 5)
         }
         else {
+            startLogging = false
             stopLogging()
         }
     }
@@ -111,7 +114,10 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
         latLabel.text = userLocation.coordinate.latitude.description
         lonLabel.text = userLocation.coordinate.longitude.description
 
-        outputString = writeDataToString(lat: userLocation.coordinate.latitude.description, lon: userLocation.coordinate.longitude.description, stringName: outputString)
+        // Only write data to string if user has started logging
+        if startLogging == true {
+            outputString = writeDataToString(lat: userLocation.coordinate.latitude.description, lon: userLocation.coordinate.longitude.description, stringName: outputString)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
