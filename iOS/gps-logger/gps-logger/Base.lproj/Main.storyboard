@@ -63,11 +63,11 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="333.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zOi-tz-H1C">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="83.5"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XXf-Vs-wVD" userLabel="LatitudeStackView">
-                                                <rect key="frame" x="0.0" y="84" width="375" height="83"/>
+                                                <rect key="frame" x="0.0" y="83.5" width="375" height="83"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ApR-V9-oxf">
                                                         <rect key="frame" x="0.0" y="0.0" width="187.5" height="83"/>
@@ -107,10 +107,10 @@
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HSi-0o-yRu" userLabel="LongitudeStackView">
-                                                <rect key="frame" x="0.0" y="167" width="375" height="83.5"/>
+                                                <rect key="frame" x="0.0" y="166.5" width="375" height="84"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AFj-vq-IqH">
-                                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="83.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="84"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Longitude =" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4gM-zU-zjB">
                                                                 <rect key="frame" x="48" y="31" width="92" height="20.5"/>
@@ -126,7 +126,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NEh-oo-uyZ">
-                                                        <rect key="frame" x="187.5" y="0.0" width="187.5" height="83.5"/>
+                                                        <rect key="frame" x="187.5" y="0.0" width="187.5" height="84"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2yc-Mz-0ba">
                                                                 <rect key="frame" x="73" y="31" width="42" height="20.5"/>
@@ -205,6 +205,9 @@
                                                                 <integer key="value" value="5"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="emailLogs:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="IfI-4F-GBK"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

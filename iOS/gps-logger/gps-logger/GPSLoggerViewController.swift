@@ -8,8 +8,9 @@
 
 import UIKit
 import CoreLocation
+import MessageUI
 
-class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
+class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMailComposeViewControllerDelegate {
 
     @IBOutlet weak var toggleLoggingButton: UIButton!
     @IBOutlet weak var latLabel: UILabel!
@@ -50,7 +51,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
         
         if toggleLoggingButton.isSelected {
             startLogging = true
-            startLogging(logFormat: "GPX", logInterval: 5)
+            startLogging(logFormat: "GPX", logInterval: 1)
         }
         else {
             startLogging = false
@@ -67,6 +68,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
         timer.invalidate()
         // finish writing the string
         outputString = finishDataWriteToString(stringName: outputString)
+        writeStringToFile(inputString: outputString, logFormat: "GPX")
     }
     
     func updateToggleButton(button: UIButton, stateOneColor: UIColor, stateOneText: String, stateTwoColor: UIColor, stateTwoText: String) {
@@ -106,6 +108,74 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
         var inputXMLString = stringName
         inputXMLString = inputXMLString + "</gpx>"
         return inputXMLString
+    }
+    
+    
+    @IBAction func emailLogs(_ sender: UIButton) {
+        //Check to see the device can send email.
+        if MFMailComposeViewController.canSendMail() {
+            print("Can send email.")
+            
+            let mailComposer = MFMailComposeViewController()
+            mailComposer.mailComposeDelegate = self
+            
+            //Set the subject and message of the email
+            mailComposer.setToRecipients(["mikev@digital2go.com"])
+            mailComposer.setSubject("iOS Device GPS Logs")
+            mailComposer.setMessageBody("Please see attached log file.", isHTML: false)
+           
+            //let path = Bundle.main.path(forResource: "log", ofType: "gpx")
+            //let path = Bundle.main.path(forResource: "log.gpx", ofType: "text/plain")
+            let path = getDocumentsDirectory().appendingPathComponent("log.gpx")
+            let fileData = NSData(contentsOf: path)
+            mailComposer.addAttachmentData(fileData! as Data, mimeType: "application/gpx", fileName: "log")
+            /*
+            do {
+                let content = try String(contentsOfFile: path)
+                print(content)
+            }
+            catch {
+                print("nope")
+            }
+            */
+            /*
+            if let filePath = Bundle.main.path(forResource: "log.gpx", ofType: "gpx") {
+                print("File path loaded.")
+                
+                if let fileData = NSData(contentsOfFile: filePath) {
+                    print("File data loaded.")
+                    mailComposer.addAttachmentData(fileData as Data, mimeType: "audio/wav", fileName: "swifts")
+                }
+            }
+            */
+            self.present(mailComposer, animated: true, completion: nil)
+        }
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func writeStringToFile(inputString: String, logFormat: String) {
+        // Set the file path
+        //let path = "log.gpx"
+        let path = getDocumentsDirectory().appendingPathComponent("log.gpx")
+        
+        // Set the contents
+        let content = inputString
+        
+        do {
+            // Write content to file
+            try content.write(to: path, atomically: false, encoding: String.Encoding.utf8)
+        }
+        catch let error as NSError {
+            print("Error writing contents to file: \(error)")
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
