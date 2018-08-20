@@ -63,7 +63,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
         
         if toggleLoggingButton.isSelected {
             startLogging = true
-            startLogging(logFormat: logFormat!, logInterval: 120)
+            startLogging(logFormat: logFormat!, logInterval: logInterval!)
         }
         else {
             startLogging = false
