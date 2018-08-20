@@ -29,7 +29,6 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
     @objc func determineMyCurrentLocation() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
-        //locationManager.distanceFilter = LocationManagerDistanceFilter
         locationManager.requestAlwaysAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
@@ -84,20 +83,22 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
         timer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(GPSLoggerViewController.determineMyCurrentLocation), userInfo: nil, repeats: true)
     }
     
+    // Start the XML String
     func startXMLString(logFormat: String) -> String
     {
         var inputXMLString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
         inputXMLString = inputXMLString + "<gpx version=\"1.1\" creator=\"Xcode\">\n"
-        print(inputXMLString)
         return inputXMLString
     }
     
+    // Add location data to XML String
     func writeDataToString(lat: String, lon: String, stringName: String) -> String {
         var inputXMLString = stringName
         inputXMLString = inputXMLString + "\t<wpt lat=\"" + lat + " long=\"" + lon + "></wpt>\n"
         return inputXMLString
     }
     
+    // Finalize the XML String
     func finishDataWriteToString(stringName: String) -> String {
         var inputXMLString = stringName
         inputXMLString = inputXMLString + "</gpx>"
@@ -107,24 +108,10 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let userLocation:CLLocation = locations[0] as CLLocation
         
-        let now = Date()
-        let formatter = DateFormatter()
-        
-        formatter.timeZone = TimeZone.current
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        
-        let dateString = formatter.string(from: now)
-        
-        print("user latitude = \(userLocation.coordinate.latitude)")
-        print("user longitude = \(userLocation.coordinate.longitude)")
-        
         latLabel.text = userLocation.coordinate.latitude.description
         lonLabel.text = userLocation.coordinate.longitude.description
-        //dataCountLabel.text = dataCount.description
-        print(outputString)
+
         outputString = writeDataToString(lat: userLocation.coordinate.latitude.description, lon: userLocation.coordinate.longitude.description, stringName: outputString)
-        print(outputString)
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
