@@ -127,6 +127,14 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
         //Check to see the device can send email.
         if MFMailComposeViewController.canSendMail() {
             print("Can send email.")
+  
+            let now = Date()
+            let formatter = DateFormatter()
+            
+            formatter.timeZone = TimeZone.current
+            formatter.dateFormat = "yyyyMMddHHmm"
+            let dateString = formatter.string(from: now)
+            let filename = "log" + dateString + ".gpx"
             
             let mailComposer = MFMailComposeViewController()
             mailComposer.mailComposeDelegate = self
@@ -138,7 +146,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
            
             let path = getDocumentsDirectory().appendingPathComponent("log.gpx")
             let fileData = NSData(contentsOf: path)
-            mailComposer.addAttachmentData(fileData! as Data, mimeType: "application/gpx", fileName: "log.gpx")
+            mailComposer.addAttachmentData(fileData! as Data, mimeType: "application/gpx", fileName: filename)
 
             self.present(mailComposer, animated: true, completion: nil)
         }
@@ -171,7 +179,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let userLocation:CLLocation = locations[0] as CLLocation
-        
+
         latLabel.text = userLocation.coordinate.latitude.description
         lonLabel.text = userLocation.coordinate.longitude.description
 
