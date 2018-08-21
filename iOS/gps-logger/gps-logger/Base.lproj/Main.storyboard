@@ -160,7 +160,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="First" image="first" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="first" id="acW-dT-cKf" userLabel="Settings"/>
                     <connections>
                         <outlet property="logFormatPicker" destination="bc0-Fp-HiW" id="ZKA-jK-mxG"/>
                         <outlet property="logIntervalLabel" destination="Vhf-d4-g31" id="DTJ-Wv-m49"/>
@@ -409,7 +409,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="Log" image="second" id="cPa-gy-q4n" userLabel="Log"/>
                     <connections>
                         <outlet property="latLabel" destination="hvH-Ny-xK4" id="R0q-K7-pZu"/>
                         <outlet property="logIntervalLabel" destination="3DN-gK-7Jp" id="Gbw-Yt-8hA"/>
