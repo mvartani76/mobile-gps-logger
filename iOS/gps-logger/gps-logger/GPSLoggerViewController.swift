@@ -44,6 +44,10 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.showsBackgroundLocationIndicator = true
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.requestLocation()
@@ -112,7 +116,25 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     // Add location data to XML String
     func writeDataToString(lat: String, lon: String, stringName: String) -> String {
         var inputXMLString = stringName
+        var stateStr = ""
+        
+        let date = Date()
+        let formatter = ISO8601DateFormatter()
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+
+        let utcTimeZoneStr = formatter.string(from: date)
+        
+        let state = UIApplication.shared.applicationState
+        if state == .background {
+            stateStr = "background"
+        }
+        else if state == .active {
+            stateStr = "active"
+        }
+        
         inputXMLString = inputXMLString + "\t\t<wpt lat=\"" + lat + "\" lon=\"" + lon + "\"></wpt>\n"
+        inputXMLString = inputXMLString + "\t\t<time>" + utcTimeZoneStr + "</time>\n"
+        inputXMLString = inputXMLString + "\t\t<metadata><keywords>" + stateStr + "</keywords></metadata>"
         return inputXMLString
     }
     
