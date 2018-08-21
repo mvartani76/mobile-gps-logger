@@ -105,24 +105,23 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     func startXMLString(logFormat: String) -> String
     {
         var inputXMLString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-        inputXMLString = inputXMLString + "<gpx version=\"1.1\" creator=\"Xcode\">\n"
+        inputXMLString = inputXMLString + "\t<gpx version=\"1.1\" creator=\"Xcode\">\n"
         return inputXMLString
     }
     
     // Add location data to XML String
     func writeDataToString(lat: String, lon: String, stringName: String) -> String {
         var inputXMLString = stringName
-        inputXMLString = inputXMLString + "\t<wpt lat=\"" + lat + "\" lon=\"" + lon + "\"></wpt>\n"
+        inputXMLString = inputXMLString + "\t\t<wpt lat=\"" + lat + "\" lon=\"" + lon + "\"></wpt>\n"
         return inputXMLString
     }
     
     // Finalize the XML String
     func finishDataWriteToString(stringName: String) -> String {
         var inputXMLString = stringName
-        inputXMLString = inputXMLString + "</gpx>"
+        inputXMLString = inputXMLString + "\t</gpx>\n" + "</xml>"
         return inputXMLString
     }
-    
     
     @IBAction func emailLogs(_ sender: UIButton) {
         //Check to see the device can send email.
