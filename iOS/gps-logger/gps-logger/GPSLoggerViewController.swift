@@ -138,7 +138,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
            
             let path = getDocumentsDirectory().appendingPathComponent("log.gpx")
             let fileData = NSData(contentsOf: path)
-            mailComposer.addAttachmentData(fileData! as Data, mimeType: "application/gpx", fileName: "log")
+            mailComposer.addAttachmentData(fileData! as Data, mimeType: "application/gpx", fileName: "log.gpx")
 
             self.present(mailComposer, animated: true, completion: nil)
         }
