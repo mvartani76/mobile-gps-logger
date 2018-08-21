@@ -112,7 +112,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     // Add location data to XML String
     func writeDataToString(lat: String, lon: String, stringName: String) -> String {
         var inputXMLString = stringName
-        inputXMLString = inputXMLString + "\t<wpt lat=\"" + lat + " long=\"" + lon + "></wpt>\n"
+        inputXMLString = inputXMLString + "\t<wpt lat=\"" + lat + "\" lon=\"" + lon + "\"></wpt>\n"
         return inputXMLString
     }
     
