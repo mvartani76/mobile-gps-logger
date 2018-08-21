@@ -84,7 +84,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
         // stop the timer
         timer.invalidate()
         // finish writing the string
-        outputString = finishDataWriteToString(stringName: outputString)
+        outputString = finishDataWriteToString(logFormat: logFormat!, stringName: outputString)
         writeStringToFile(inputString: outputString, logFormat: logFormat!)
     }
     
@@ -109,12 +109,26 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     func startXMLString(logFormat: String) -> String
     {
         var inputXMLString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-        inputXMLString = inputXMLString + "\t<gpx version=\"1.1\" creator=\"Xcode\">\n"
+        
+        switch logFormat {
+            case "gpx":
+                inputXMLString = inputXMLString + "\t<gpx version=\"1.1\" creator=\"Xcode\">\n"
+            case "kml":
+                inputXMLString = inputXMLString + "\t<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n"
+                inputXMLString = inputXMLString + "\t\t<Placemark>\n"
+                inputXMLString = inputXMLString + "\t\t\t<name>iOS Test Path</name>\n"
+                inputXMLString = inputXMLString + "\t\t\t<LineString>\n"
+                inputXMLString = inputXMLString + "\t\t\t\t<tessellate>1</tessellate>\n"
+                inputXMLString = inputXMLString + "\t\t\t\t<coordinates>\n"
+            default:
+                print("error selecting logFormat")
+        }
+        
         return inputXMLString
     }
     
     // Add location data to XML String
-    func writeDataToString(lat: String, lon: String, stringName: String) -> String {
+    func writeDataToString(logFormat: String, lat: String, lon: String, stringName: String) -> String {
         var inputXMLString = stringName
         var stateStr = ""
         
@@ -132,16 +146,39 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
             stateStr = "active"
         }
         
-        inputXMLString = inputXMLString + "\t\t<wpt lat=\"" + lat + "\" lon=\"" + lon + "\"></wpt>\n"
-        inputXMLString = inputXMLString + "\t\t<time>" + utcTimeZoneStr + "</time>\n"
-        inputXMLString = inputXMLString + "\t\t<metadata><keywords>" + stateStr + "</keywords></metadata>"
+        switch logFormat {
+            case "gpx":
+                inputXMLString = inputXMLString + "\t\t<wpt lat=\"" + lat + "\" lon=\"" + lon + "\"></wpt>\n"
+                inputXMLString = inputXMLString + "\t\t<time>" + utcTimeZoneStr + "</time>\n"
+                inputXMLString = inputXMLString + "\t\t<metadata><keywords>" + stateStr + "</keywords></metadata>"
+            case "kml":
+                inputXMLString = inputXMLString + "\t\t\t\t\t" + lon + "," + lat + "," + "0\n"
+            default:
+                print("error selecting logFormat")
+        }
+        
+        
+        
         return inputXMLString
     }
     
     // Finalize the XML String
-    func finishDataWriteToString(stringName: String) -> String {
+    func finishDataWriteToString(logFormat: String, stringName: String) -> String {
         var inputXMLString = stringName
-        inputXMLString = inputXMLString + "\t</gpx>\n" + "</xml>"
+        
+        switch logFormat {
+            case "gpx":
+                inputXMLString = inputXMLString + "\t</gpx>\n" + "</xml>"
+            case "kml":
+                inputXMLString = inputXMLString + "\t\t\t\t</coordinates>\n"
+                inputXMLString = inputXMLString + "\t\t\t</LineString>\n"
+                inputXMLString = inputXMLString + "\t\t</Placemark>\n"
+                inputXMLString = inputXMLString + "\t</kml>\n" + "</xml>"
+            default:
+                print("error selecting logFormat")
+        }
+        
+        
         return inputXMLString
     }
     
@@ -156,7 +193,14 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
             formatter.timeZone = TimeZone.current
             formatter.dateFormat = "yyyyMMddHHmm"
             let dateString = formatter.string(from: now)
-            let filename = "log" + dateString + ".gpx"
+            var filename = "log"
+            
+            if logFormat == "gpx" {
+                 filename = filename + dateString + ".gpx"
+            }
+            else if logFormat == "kml" {
+                filename = filename + dateString + ".kml"
+            }
             
             let mailComposer = MFMailComposeViewController()
             mailComposer.mailComposeDelegate = self
@@ -168,8 +212,13 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
            
             let path = getDocumentsDirectory().appendingPathComponent("log.gpx")
             let fileData = NSData(contentsOf: path)
-            mailComposer.addAttachmentData(fileData! as Data, mimeType: "application/gpx", fileName: filename)
-
+            
+            if logFormat == "gpx" {
+                mailComposer.addAttachmentData(fileData! as Data, mimeType: "application/gpx", fileName: filename)
+            }
+            else if logFormat == "kml" {
+                mailComposer.addAttachmentData(fileData! as Data, mimeType: "application/kml", fileName: filename)
+            }
             self.present(mailComposer, animated: true, completion: nil)
         }
     }
@@ -207,7 +256,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
 
         // Only write data to string if user has started logging
         if startLogging == true {
-            outputString = writeDataToString(lat: userLocation.coordinate.latitude.description, lon: userLocation.coordinate.longitude.description, stringName: outputString)
+            outputString = writeDataToString(logFormat: logFormat!, lat: userLocation.coordinate.latitude.description, lon: userLocation.coordinate.longitude.description, stringName: outputString)
         }
     }
     
