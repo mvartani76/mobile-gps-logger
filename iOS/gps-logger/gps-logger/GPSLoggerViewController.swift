@@ -29,6 +29,13 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.showsBackgroundLocationIndicator = true
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        
         determineMyCurrentLocation()
     }
     
@@ -41,13 +48,9 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     }
 
     @objc func determineMyCurrentLocation() {
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
+
         locationManager.requestAlwaysAuthorization()
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.pausesLocationUpdatesAutomatically = false
-        locationManager.showsBackgroundLocationIndicator = true
-        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.requestLocation()
@@ -250,7 +253,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let userLocation:CLLocation = locations[0] as CLLocation
-
+        print("location updated")
         latLabel.text = userLocation.coordinate.latitude.description
         lonLabel.text = userLocation.coordinate.longitude.description
 
