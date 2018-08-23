@@ -22,11 +22,15 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qjj-vG-Nvj">
                                 <rect key="frame" x="0.0" y="-14.5" width="375" height="667"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4yC-0Y-hph">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="83.5"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PYb-Ln-4fi" userLabel="UpperView">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="133.5"/>
+                                        <rect key="frame" x="0.0" y="83.5" width="375" height="83.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log File Format" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wWh-Og-ugD" userLabel="PickerLabel">
-                                                <rect key="frame" x="-0.5" y="-1" width="375" height="134"/>
+                                                <rect key="frame" x="-0.5" y="-1" width="375" height="84"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -41,10 +45,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1sd-gy-jF4" userLabel="PickerContainer">
-                                        <rect key="frame" x="0.0" y="133.5" width="375" height="133.5"/>
+                                        <rect key="frame" x="0.0" y="167" width="375" height="83"/>
                                         <subviews>
                                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bc0-Fp-HiW">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="133"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
                                             </pickerView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -55,11 +59,15 @@
                                             <constraint firstItem="bc0-Fp-HiW" firstAttribute="width" secondItem="1sd-gy-jF4" secondAttribute="width" id="Tag-w0-avu"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6BV-lN-2pO" userLabel="BufferView">
-                                        <rect key="frame" x="0.0" y="267" width="375" height="133"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RBL-tJ-aJH">
+                                        <rect key="frame" x="0.0" y="250" width="375" height="84"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6BV-lN-2pO" userLabel="SliderLabelView">
+                                        <rect key="frame" x="0.0" y="334" width="375" height="83.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Logging Interval" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgt-a6-CwV" userLabel="SliderLabel">
-                                                <rect key="frame" x="0.0" y="55" width="375" height="23"/>
+                                                <rect key="frame" x="0.0" y="30.5" width="375" height="23"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -72,11 +80,31 @@
                                             <constraint firstItem="wgt-a6-CwV" firstAttribute="centerY" secondItem="6BV-lN-2pO" secondAttribute="centerY" id="SR2-Bt-BZe"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R8S-wc-75m" userLabel="SegmentControlView">
+                                        <rect key="frame" x="0.0" y="417.5" width="375" height="83"/>
+                                        <subviews>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MEd-oo-PUv">
+                                                <rect key="frame" x="120" y="27.5" width="135" height="29"/>
+                                                <segments>
+                                                    <segment title="Time"/>
+                                                    <segment title="Distance"/>
+                                                </segments>
+                                                <connections>
+                                                    <action selector="segmentControlChanged:" destination="9pv-A4-QxB" eventType="valueChanged" id="Qn5-8f-fWB"/>
+                                                </connections>
+                                            </segmentedControl>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="MEd-oo-PUv" firstAttribute="centerY" secondItem="R8S-wc-75m" secondAttribute="centerY" id="mlm-Qx-cWH"/>
+                                            <constraint firstItem="MEd-oo-PUv" firstAttribute="centerX" secondItem="R8S-wc-75m" secondAttribute="centerX" id="pDr-Qu-QMn"/>
+                                        </constraints>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dZf-Ko-ipv" userLabel="SliderView">
-                                        <rect key="frame" x="0.0" y="400" width="375" height="133.5"/>
+                                        <rect key="frame" x="0.0" y="500.5" width="375" height="83"/>
                                         <subviews>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="60" minValue="1" maxValue="600" translatesAutoresizingMaskIntoConstraints="NO" id="BrU-xT-E1v" userLabel="logIntervalSlider">
-                                                <rect key="frame" x="17" y="0.5" width="341.5" height="134.5"/>
+                                                <rect key="frame" x="17" y="0.5" width="341.5" height="84"/>
                                                 <connections>
                                                     <action selector="sliderValueChanged:" destination="9pv-A4-QxB" eventType="valueChanged" id="jh3-Nn-Hs6"/>
                                                 </connections>
@@ -91,16 +119,16 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w9f-0e-HTt" userLabel="BottomView">
-                                        <rect key="frame" x="0.0" y="533.5" width="375" height="133.5"/>
+                                        <rect key="frame" x="0.0" y="583.5" width="375" height="83.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dEL-I5-5sm">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="133.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="83.5"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gPi-Mq-ooj" userLabel="labelView">
-                                                        <rect key="frame" x="0.0" y="0.0" width="281.5" height="133.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="281.5" height="83.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log Interval (seconds) =" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KbA-KA-dn7" userLabel="Logging Interval (seconds) = ">
-                                                                <rect key="frame" x="48" y="56.5" width="185.5" height="20.5"/>
+                                                                <rect key="frame" x="48" y="31.5" width="185.5" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -113,10 +141,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c9d-IK-Yh5" userLabel="labelValueView">
-                                                        <rect key="frame" x="281.5" y="0.0" width="93.5" height="133.5"/>
+                                                        <rect key="frame" x="281.5" y="0.0" width="93.5" height="83.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vhf-d4-g31" userLabel="logIntervalLabel">
-                                                                <rect key="frame" x="25.5" y="56.5" width="42" height="20.5"/>
+                                                                <rect key="frame" x="25.5" y="31.5" width="42" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -144,8 +172,11 @@
                                     </view>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="R8S-wc-75m" firstAttribute="height" secondItem="6BV-lN-2pO" secondAttribute="height" id="5mg-tp-zXf"/>
                                     <constraint firstItem="6BV-lN-2pO" firstAttribute="height" secondItem="PYb-Ln-4fi" secondAttribute="height" id="8bk-8C-1p1"/>
+                                    <constraint firstItem="PYb-Ln-4fi" firstAttribute="height" secondItem="4yC-0Y-hph" secondAttribute="height" id="9kQ-tS-Dsl"/>
                                     <constraint firstItem="1sd-gy-jF4" firstAttribute="height" secondItem="PYb-Ln-4fi" secondAttribute="height" id="Tx3-BQ-VtQ"/>
+                                    <constraint firstItem="6BV-lN-2pO" firstAttribute="height" secondItem="RBL-tJ-aJH" secondAttribute="height" id="nTJ-Na-grd"/>
                                     <constraint firstItem="dZf-Ko-ipv" firstAttribute="height" secondItem="6BV-lN-2pO" secondAttribute="height" id="rwq-7A-wvW"/>
                                     <constraint firstItem="w9f-0e-HTt" firstAttribute="height" secondItem="dZf-Ko-ipv" secondAttribute="height" id="wiF-dt-tgU"/>
                                 </constraints>
@@ -165,6 +196,8 @@
                         <outlet property="logFormatPicker" destination="bc0-Fp-HiW" id="ZKA-jK-mxG"/>
                         <outlet property="logIntervalLabel" destination="Vhf-d4-g31" id="DTJ-Wv-m49"/>
                         <outlet property="logIntervalSlider" destination="BrU-xT-E1v" id="UFJ-o4-55A"/>
+                        <outlet property="logLabelText" destination="KbA-KA-dn7" id="mWy-AM-xoa"/>
+                        <outlet property="segmentControlButton" destination="MEd-oo-PUv" id="rRE-Rt-ZMA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>

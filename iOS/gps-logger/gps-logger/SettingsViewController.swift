@@ -14,6 +14,8 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var logFormatPicker: UIPickerView!
     @IBOutlet weak var logIntervalLabel: UILabel!
     @IBOutlet weak var logIntervalSlider: UISlider!
+    @IBOutlet weak var segmentControlButton: UISegmentedControl!
+    @IBOutlet weak var logLabelText: UILabel!
     
     var logFormatDataSource = ["gpx", "kml"]
     
@@ -58,5 +60,22 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         let currentValue = Int(sender.value)
         logIntervalLabel.text = "\(currentValue)"
         logInterval = currentValue
+    }
+    @IBAction func segmentControlChanged(_ sender: UISegmentedControl) {
+        let buttonState = segmentControlButton.titleForSegment(at: segmentControlButton.selectedSegmentIndex)
+        
+        switch buttonState {
+        case "Time":
+            logLabelText.text = "Logging Interval (seconds)"
+            logIntervalSlider.minimumValue = 1
+            logIntervalSlider.maximumValue = 600
+        case "Distance":
+            logLabelText.text = "Logging Distance (meters)"
+            logIntervalSlider.minimumValue = 2
+            logIntervalSlider.maximumValue = 1000
+        default:
+            print("No state detected")
+        }
+        
     }
 }
