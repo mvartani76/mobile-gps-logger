@@ -446,6 +446,7 @@
                     <connections>
                         <outlet property="latLabel" destination="hvH-Ny-xK4" id="R0q-K7-pZu"/>
                         <outlet property="logIntervalLabel" destination="3DN-gK-7Jp" id="Gbw-Yt-8hA"/>
+                        <outlet property="logLabelText" destination="9Xa-Nh-WpG" id="9lG-kD-99X"/>
                         <outlet property="lonLabel" destination="2yc-Mz-0ba" id="cNs-nd-hAt"/>
                         <outlet property="toggleLoggingButton" destination="Fwf-bF-fF9" id="gKz-jJ-YOc"/>
                     </connections>

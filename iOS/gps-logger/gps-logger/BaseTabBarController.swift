@@ -12,6 +12,7 @@ class BaseTabBarController: UITabBarController {
 
     var logInterval: Int = 300
     var logFormat: String = "gpx"
+    var logMethod: String = "Time"
     
     override func viewDidLoad() {
         super.viewDidLoad()

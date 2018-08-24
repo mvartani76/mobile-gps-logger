@@ -21,6 +21,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     var logInterval = 300
     var logFormat = "gpx"
+    var logMethod = "Time"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         logFormatPicker.dataSource = self
         
         let currentSliderValue = Int(logIntervalSlider.value)
+        logInterval = currentSliderValue
         logIntervalLabel.text = "\(currentSliderValue)"
     }
     
@@ -37,6 +39,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         tabBar.logInterval = logInterval
         tabBar.logFormat = logFormat
+        tabBar.logMethod = logMethod
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -69,10 +72,12 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             logLabelText.text = "Logging Interval (seconds)"
             logIntervalSlider.minimumValue = 1
             logIntervalSlider.maximumValue = 600
+            logMethod = "Time"
         case "Distance":
             logLabelText.text = "Logging Distance (meters)"
             logIntervalSlider.minimumValue = 2
             logIntervalSlider.maximumValue = 1000
+            logMethod = "Distance"
         default:
             print("No state detected")
         }

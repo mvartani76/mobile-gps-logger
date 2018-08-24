@@ -16,6 +16,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     @IBOutlet weak var latLabel: UILabel!
     @IBOutlet weak var lonLabel: UILabel!
     @IBOutlet weak var logIntervalLabel: UILabel!
+    @IBOutlet weak var logLabelText: UILabel!
     
     var locationManager:CLLocationManager!
     
@@ -25,6 +26,7 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
     var startLogging = false
     var logInterval: Int?
     var logFormat: String?
+    var logMethod: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +46,19 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
         let tabBar = tabBarController as! BaseTabBarController
         logInterval = tabBar.logInterval
         logFormat = tabBar.logFormat
+        logMethod = tabBar.logMethod
         logIntervalLabel.text = String(describing: logInterval!)
+        
+        switch logMethod {
+            case "Time":
+                logLabelText.text = "Log Interval (seconds)"
+            case "Distance":
+                logLabelText.text = "Log Distance (meters)"
+            default:
+                print("No state detected")
+        }
+        
+        
     }
 
     @objc func determineMyCurrentLocation() {
@@ -70,22 +84,40 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
         
         if toggleLoggingButton.isSelected {
             startLogging = true
-            startLogging(logFormat: logFormat!, logInterval: logInterval!)
+            startLogging(logMethod: logMethod!, logFormat: logFormat!, logInterval: logInterval!)
         }
         else {
             startLogging = false
-            stopLogging()
+            stopLogging(logMethod: logMethod!)
         }
     }
     
-    func startLogging(logFormat: String, logInterval: Int) {
+    func startLogging(logMethod: String, logFormat: String, logInterval: Int) {
         outputString = startXMLString(logFormat: logFormat)
-        runTimer(timeInterval: Double(logInterval))
+        
+        if (logMethod == "Time") {
+            runTimer(timeInterval: Double(logInterval))
+        }
+        else if (logMethod == "Distance") {
+            locationManager.requestAlwaysAuthorization()
+            
+            locationManager.distanceFilter = CLLocationDistance(logInterval)
+            
+            if CLLocationManager.locationServicesEnabled() {
+                locationManager.startUpdatingLocation()
+            }
+        }
     }
     
-    func stopLogging() {
-        // stop the timer
-        timer.invalidate()
+    func stopLogging(logMethod: String) {
+        
+        if (logMethod == "Time") {
+            // stop the timer
+            timer.invalidate()
+        }
+        else if (logMethod == "Distance") {
+            locationManager.stopUpdatingLocation()
+        }
         // finish writing the string
         outputString = finishDataWriteToString(logFormat: logFormat!, stringName: outputString)
         writeStringToFile(inputString: outputString, logFormat: logFormat!)
@@ -153,14 +185,12 @@ class GPSLoggerViewController: UIViewController, CLLocationManagerDelegate, MFMa
             case "gpx":
                 inputXMLString = inputXMLString + "\t\t<wpt lat=\"" + lat + "\" lon=\"" + lon + "\"></wpt>\n"
                 inputXMLString = inputXMLString + "\t\t<time>" + utcTimeZoneStr + "</time>\n"
-                inputXMLString = inputXMLString + "\t\t<metadata><keywords>" + stateStr + "</keywords></metadata>"
+                inputXMLString = inputXMLString + "\t\t<metadata><keywords>" + stateStr + "</keywords></metadata>\n"
             case "kml":
                 inputXMLString = inputXMLString + "\t\t\t\t\t" + lon + "," + lat + "," + "0\n"
             default:
                 print("error selecting logFormat")
         }
-        
-        
         
         return inputXMLString
     }
