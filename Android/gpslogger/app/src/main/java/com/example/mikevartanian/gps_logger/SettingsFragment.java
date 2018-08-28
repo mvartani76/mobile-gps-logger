@@ -1,12 +1,17 @@
 package com.example.mikevartanian.gps_logger;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
@@ -20,6 +25,7 @@ import android.widget.TextView;
  */
 public class SettingsFragment extends Fragment {
     private TextView tv;
+    private Spinner spinner;
 
     private OnFragmentInteractionListener mListener;
 
@@ -51,6 +57,34 @@ public class SettingsFragment extends Fragment {
         tv = (TextView) view.findViewById(R.id.tv);
 
         tv.setText("Settings");
+
+        spinner = (Spinner) view.findViewById(R.id.fileformat_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.fileformat_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private static final String TAG = "MCV Logs";
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int pos, long id) {
+                // An item was selected. You can retrieve the selected item using
+                // parent.getItemAtPosition(pos)
+                Log.i(TAG, "spinner.pos = " + pos);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                Log.i(TAG, "Nothing Selected");
+            }
+
+        });
+
+
         return view;
     }
 

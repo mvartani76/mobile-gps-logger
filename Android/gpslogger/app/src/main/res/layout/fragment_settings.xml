@@ -11,4 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <Spinner
+        android:id="@+id/fileformat_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
 </FrameLayout>
