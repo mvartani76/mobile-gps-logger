@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Load Settings Fragment as default
         loadFragment(new SettingsFragment());
 
         SettingsDataViewModel mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);

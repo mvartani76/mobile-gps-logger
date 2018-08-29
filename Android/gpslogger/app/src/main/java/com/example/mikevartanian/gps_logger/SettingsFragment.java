@@ -14,6 +14,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 
 
 /**
@@ -27,6 +30,8 @@ import android.widget.TextView;
 public class SettingsFragment extends Fragment {
     private TextView tv;
     private Spinner spinner;
+    private SeekBar logIntervalSeekBar;
+    private TextView logIntervalTextView;
     private SettingsDataViewModel model;
 
     private OnFragmentInteractionListener mListener;
@@ -61,6 +66,9 @@ public class SettingsFragment extends Fragment {
         tv = (TextView) view.findViewById(R.id.tv);
         tv.setText("Settings");
 
+        logIntervalSeekBar = (SeekBar) view.findViewById(R.id.loginterval_seekbar);
+        logIntervalTextView = (TextView) view.findViewById(R.id.loginterval_textview);
+
         Log.i(TAG, "SettingsFragment OnCreateView Called");
 
         spinner = (Spinner) view.findViewById(R.id.fileformat_spinner);
@@ -73,6 +81,31 @@ public class SettingsFragment extends Fragment {
         spinner.setAdapter(adapter);
 
         SettingsDataViewModel mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);
+
+        // Initialize the textview with '0'.
+        logIntervalTextView.setText("Covered: " + logIntervalSeekBar.getProgress() + "/" + logIntervalSeekBar.getMax());
+
+        logIntervalSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            int progress = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                Toast.makeText(getActivity(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(getActivity(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                logIntervalTextView.setText("Covered: " + progress + "/" + logIntervalSeekBar.getMax());
+                Toast.makeText(getActivity(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             private static final String TAG = "MCV Logs";

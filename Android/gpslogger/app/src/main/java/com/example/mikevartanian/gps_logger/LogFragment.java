@@ -51,7 +51,7 @@ public class LogFragment extends Fragment {
         String TAG = "MCV Logs";
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        View view = inflater.inflate(R.layout.fragment_log, container, false);
         tv = (TextView) view.findViewById(R.id.tv);
 
         tv.setText("Log");
