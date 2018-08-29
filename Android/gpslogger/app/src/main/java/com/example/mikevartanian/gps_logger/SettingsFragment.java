@@ -1,6 +1,7 @@
 package com.example.mikevartanian.gps_logger;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 public class SettingsFragment extends Fragment {
     private TextView tv;
     private Spinner spinner;
+    private SettingsDataViewModel model;
 
     private OnFragmentInteractionListener mListener;
 
@@ -53,10 +55,13 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        String TAG = "MCV Logs";
+
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         tv = (TextView) view.findViewById(R.id.tv);
-
         tv.setText("Settings");
+
+        Log.i(TAG, "SettingsFragment OnCreateView Called");
 
         spinner = (Spinner) view.findViewById(R.id.fileformat_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -67,6 +72,7 @@ public class SettingsFragment extends Fragment {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
+        SettingsDataViewModel mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             private static final String TAG = "MCV Logs";
@@ -84,7 +90,6 @@ public class SettingsFragment extends Fragment {
 
         });
 
-
         return view;
     }
 
@@ -101,5 +106,13 @@ public class SettingsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        String TAG = "MCV Logs";
+
+        Log.i(TAG, "SettingsFragment OnDestroyView Called");
     }
 }

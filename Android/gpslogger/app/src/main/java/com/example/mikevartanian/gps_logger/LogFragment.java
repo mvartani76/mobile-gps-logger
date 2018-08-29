@@ -1,9 +1,11 @@
 package com.example.mikevartanian.gps_logger;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +48,17 @@ public class LogFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        String TAG = "MCV Logs";
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         tv = (TextView) view.findViewById(R.id.tv);
 
         tv.setText("Log");
+
+        Log.i(TAG, "LogFragment OnCreateView Called");
+        SettingsDataViewModel mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);
+
         return view;
     }
 
@@ -67,5 +75,13 @@ public class LogFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        String TAG = "MCV Logs";
+
+        Log.i(TAG, "LogFragment OnDestroyView Called");
     }
 }
