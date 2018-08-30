@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -17,6 +18,11 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
+    final SettingsFragment settingsFragment = new SettingsFragment();
+    final LogFragment logFragment = new LogFragment();
+    final FragmentManager fragmentManager = getSupportFragmentManager();
+    Fragment active = settingsFragment;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -25,12 +31,12 @@ public class MainActivity extends AppCompatActivity {
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_settings:
-                    fragment = new SettingsFragment();
-                    loadFragment(fragment);
+                    fragmentManager.beginTransaction().hide(active).show(settingsFragment).commit();
+                    active = settingsFragment;
                     return true;
                 case R.id.navigation_log:
-                    fragment = new LogFragment();
-                    loadFragment(fragment);
+                    fragmentManager.beginTransaction().hide(active).show(logFragment).commit();
+                    active = logFragment;
                     return true;
             }
             return false;
@@ -42,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Load Settings Fragment as default
-        loadFragment(new SettingsFragment());
+        fragmentManager.beginTransaction().add(R.id.flContainer, logFragment, "log").hide(logFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.flContainer, settingsFragment, "settings").commit();
 
         SettingsDataViewModel mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);
 
@@ -51,12 +57,4 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
-
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.flContainer, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
 }
