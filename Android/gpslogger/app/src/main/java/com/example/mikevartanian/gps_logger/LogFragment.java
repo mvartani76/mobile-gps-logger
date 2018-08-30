@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -20,8 +21,9 @@ import android.widget.TextView;
  * Use the {@link LogFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LogFragment extends Fragment {
+public class LogFragment extends Fragment implements View.OnClickListener {
     private TextView tv;
+    private Button logbutton, emailbutton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -53,13 +55,40 @@ public class LogFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_log, container, false);
         tv = (TextView) view.findViewById(R.id.tv);
-
         tv.setText("Log");
+
+        logbutton = (Button) view.findViewById(R.id.log_button);
+        logbutton.setOnClickListener(this);
+        emailbutton = (Button) view.findViewById(R.id.email_button);
+        emailbutton.setOnClickListener(this);
+        logbutton.setTag(1);
+        logbutton.setText("Start Logging");
 
         Log.i(TAG, "LogFragment OnCreateView Called");
         SettingsDataViewModel mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);
 
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.log_button:
+                final int tagStatus = (Integer) view.getTag();
+                if (tagStatus == 1) {
+                    logbutton.setText("Stop Logging");
+                    view.setTag(0);
+                } else {
+                    logbutton.setText("Start Logging");
+                    view.setTag(1);
+                }
+                break;
+            case R.id.email_button:
+                break;
+            default:
+                break;
+        }
     }
 
     /**
