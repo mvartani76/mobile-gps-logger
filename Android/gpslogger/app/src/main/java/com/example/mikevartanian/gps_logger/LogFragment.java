@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import android.widget.Toast;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 
 /**
@@ -26,6 +34,13 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     private Button logbutton, emailbutton;
 
     private OnFragmentInteractionListener mListener;
+    private SettingsDataViewModel mViewModel;
+
+    Timer timer;
+    TimerTask timerTask;
+
+    //we are going to use a handler to be able to run in our TimerTask
+    final Handler handler = new Handler();
 
     public LogFragment() {
         // Required empty public constructor
@@ -57,15 +72,23 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         tv = (TextView) view.findViewById(R.id.tv);
         tv.setText("Log");
 
+        mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);
+
         logbutton = (Button) view.findViewById(R.id.log_button);
         logbutton.setOnClickListener(this);
         emailbutton = (Button) view.findViewById(R.id.email_button);
         emailbutton.setOnClickListener(this);
-        logbutton.setTag(1);
-        logbutton.setText("Start Logging");
+
+        int tagStatus = mViewModel.getLogButtonState();
+
+        logbutton.setTag(tagStatus);
+        if (tagStatus == 1) {
+            logbutton.setText("Start Logging");
+        } else {
+            logbutton.setText("Stop Logging");
+        }
 
         Log.i(TAG, "LogFragment OnCreateView Called");
-        SettingsDataViewModel mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);
 
         return view;
     }
@@ -79,9 +102,13 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                 if (tagStatus == 1) {
                     logbutton.setText("Stop Logging");
                     view.setTag(0);
+                    mViewModel.setLogButtonState(0);
+                    startLogging();
                 } else {
                     logbutton.setText("Start Logging");
                     view.setTag(1);
+                    mViewModel.setLogButtonState(1);
+                    stopLogging();
                 }
                 break;
             case R.id.email_button:
@@ -112,5 +139,54 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         String TAG = "MCV Logs";
 
         Log.i(TAG, "LogFragment OnDestroyView Called");
+    }
+
+    public void startLogging() {
+        startTimer();
+    }
+
+    public void stopLogging() {
+        stoptimertask(getView());
+    }
+
+    public void startTimer() {
+        //set a new Timer
+        timer = new Timer();
+
+        //initialize the TimerTask's job
+        initializeTimerTask();
+
+        //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
+        timer.schedule(timerTask, 5000, 10000); //
+    }
+
+    public void stoptimertask(View v) {
+        //stop the timer, if it's not already null
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    public void initializeTimerTask() {
+        timerTask = new TimerTask() {
+            public void run() {
+
+                //use a handler to run a toast that shows the current timestamp
+                handler.post(new Runnable() {
+                    public void run() {
+                        //get the current timeStamp
+                        Calendar calendar = Calendar.getInstance();
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
+                        final String strDate = simpleDateFormat.format(calendar.getTime());
+
+                        //show the toast
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(getActivity(), strDate, duration);
+                        toast.show();
+                    }
+                });
+            }
+        };
     }
 }
