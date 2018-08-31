@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="26dp"
-        android:max="10"
+        android:max="600"
         android:layout_below="@+id/fileformat_spinner"/>
     <!--android:layout_alignParentTop="true"-->
 

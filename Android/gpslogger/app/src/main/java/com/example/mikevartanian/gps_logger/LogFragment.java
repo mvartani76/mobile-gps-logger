@@ -16,6 +16,9 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -30,7 +33,7 @@ import java.util.Calendar;
  * create an instance of this fragment.
  */
 public class LogFragment extends Fragment implements View.OnClickListener {
-    private TextView tv;
+    private TextView tv, interval_label, interval_value;
     private Button logbutton, emailbutton;
 
     private OnFragmentInteractionListener mListener;
@@ -71,8 +74,11 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_log, container, false);
         tv = (TextView) view.findViewById(R.id.tv);
         tv.setText("Log");
+        interval_label = (TextView) view.findViewById(R.id.interval_label);
+        interval_value = (TextView) view.findViewById(R.id.interval_value);
 
-        mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity()).get(SettingsDataViewModel.class);
+        interval_value.setText(String.valueOf(mViewModel.getLogInterval()));
 
         logbutton = (Button) view.findViewById(R.id.log_button);
         logbutton.setOnClickListener(this);
@@ -156,14 +162,15 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         //initialize the TimerTask's job
         initializeTimerTask();
 
-        //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-        timer.schedule(timerTask, 5000, 10000); //
+        //schedule the timer, after the first 0ms the TimerTask will run every logInterval seconds
+        timer.schedule(timerTask, 0, (long) mViewModel.getLogInterval());
     }
 
     public void stoptimertask(View v) {
         //stop the timer, if it's not already null
         if (timer != null) {
             timer.cancel();
+            timer.purge();
             timer = null;
         }
     }

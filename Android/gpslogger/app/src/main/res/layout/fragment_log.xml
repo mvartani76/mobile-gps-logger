@@ -53,13 +53,33 @@
             android:text="latitude2"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/interval_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lon_linearlayout"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/interval_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log Interval (seconds) = "/>
+
+        <TextView
+            android:id="@+id/interval_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
     <Button
         android:id="@+id/log_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/lon_linearlayout"
+        android:layout_below="@+id/interval_layout"
         android:text="Start Logging" />
 
     <Button
