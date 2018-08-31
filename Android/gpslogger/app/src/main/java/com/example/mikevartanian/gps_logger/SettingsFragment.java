@@ -32,7 +32,7 @@ public class SettingsFragment extends Fragment {
     private Spinner spinner;
     private SeekBar logIntervalSeekBar;
     private TextView logIntervalTextView;
-    private SettingsDataViewModel model;
+    private SettingsDataViewModel mViewModel;
 
     private OnFragmentInteractionListener mListener;
 
@@ -80,7 +80,7 @@ public class SettingsFragment extends Fragment {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
-        SettingsDataViewModel mViewModel = ViewModelProviders.of(this).get(SettingsDataViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity()).get(SettingsDataViewModel.class);
 
         // Initialize the textview with '0'.
         logIntervalTextView.setText("Covered: " + logIntervalSeekBar.getProgress() + "/" + logIntervalSeekBar.getMax());
@@ -91,6 +91,7 @@ public class SettingsFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
                 Toast.makeText(getActivity(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+                mViewModel.setLogInterval(progress);
             }
 
             @Override
@@ -102,6 +103,7 @@ public class SettingsFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 logIntervalTextView.setText("Covered: " + progress + "/" + logIntervalSeekBar.getMax());
                 Toast.makeText(getActivity(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+                mViewModel.setLogInterval(progress);
             }
         });
 
