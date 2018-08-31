@@ -1,8 +1,11 @@
 package com.example.mikevartanian.gps_logger;
 
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +23,7 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class LogFragment extends Fragment implements View.OnClickListener {
-    private TextView tv, interval_label, interval_value;
+    private TextView tv, interval_label, interval_value, lat_value, lon_value;
     private Button logbutton, emailbutton;
 
     private OnFragmentInteractionListener mListener;
@@ -65,6 +68,9 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         logbutton.setOnClickListener(this);
         emailbutton = (Button) view.findViewById(R.id.email_button);
         emailbutton.setOnClickListener(this);
+
+        lat_value = (TextView) view.findViewById(R.id.lat_value);
+        lon_value = (TextView) view.findViewById(R.id.lon_value);
 
         int tagStatus = mViewModel.getLogButtonState();
 
@@ -129,12 +135,15 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     }
 
     public void startLogging() {
-        mViewModel.startTimer((long) mViewModel.getLogInterval(), getActivity());
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Check permission
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, SettingsDataViewModel.REQUEST_LOCATION_PERMISSIONS);
+        } else {
+            mViewModel.startTimer((long) mViewModel.getLogInterval(), getActivity(), lat_value, lon_value);
+        }
     }
 
     public void stopLogging() {
         mViewModel.stoptimertask(getView());
     }
-
-
 }
