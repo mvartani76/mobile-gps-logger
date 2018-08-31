@@ -1,10 +1,8 @@
 package com.example.mikevartanian.gps_logger;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,17 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.Timer;
-import java.util.TimerTask;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,12 +25,6 @@ public class LogFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private SettingsDataViewModel mViewModel;
-
-    Timer timer;
-    TimerTask timerTask;
-
-    //we are going to use a handler to be able to run in our TimerTask
-    final Handler handler = new Handler();
 
     public LogFragment() {
         // Required empty public constructor
@@ -148,52 +129,12 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     }
 
     public void startLogging() {
-        startTimer();
+        mViewModel.startTimer((long) mViewModel.getLogInterval(), getActivity());
     }
 
     public void stopLogging() {
-        stoptimertask(getView());
+        mViewModel.stoptimertask(getView());
     }
 
-    public void startTimer() {
-        //set a new Timer
-        timer = new Timer();
 
-        //initialize the TimerTask's job
-        initializeTimerTask();
-
-        //schedule the timer, after the first 0ms the TimerTask will run every logInterval seconds
-        timer.schedule(timerTask, 0, (long) mViewModel.getLogInterval());
-    }
-
-    public void stoptimertask(View v) {
-        //stop the timer, if it's not already null
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
-            timer = null;
-        }
-    }
-
-    public void initializeTimerTask() {
-        timerTask = new TimerTask() {
-            public void run() {
-
-                //use a handler to run a toast that shows the current timestamp
-                handler.post(new Runnable() {
-                    public void run() {
-                        //get the current timeStamp
-                        Calendar calendar = Calendar.getInstance();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
-                        final String strDate = simpleDateFormat.format(calendar.getTime());
-
-                        //show the toast
-                        int duration = Toast.LENGTH_SHORT;
-                        Toast toast = Toast.makeText(getActivity(), strDate, duration);
-                        toast.show();
-                    }
-                });
-            }
-        };
-    }
 }
