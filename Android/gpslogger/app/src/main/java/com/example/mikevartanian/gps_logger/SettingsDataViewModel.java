@@ -10,7 +10,9 @@ import android.widget.Toast;
 import android.os.Handler;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,6 +23,9 @@ public class SettingsDataViewModel extends ViewModel {
     public int logInterval = 300;
     public String logMethod = "Time";
     public int logButtonState = 1;
+
+    public String XMLString = "";
+    public LatLonPair latlon;
 
     String locationProvider = LocationManager.NETWORK_PROVIDER;
 
@@ -95,10 +100,13 @@ public class SettingsDataViewModel extends ViewModel {
                     public void run() {
                         //get the current timeStamp
                         Calendar calendar = Calendar.getInstance();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+                        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                         final String strDate = simpleDateFormat.format(calendar.getTime());
 
-                        getLastKnownLocation(currentActivity, lat_textview, lon_textview);
+                        latlon = getLastKnownLocation(currentActivity, lat_textview, lon_textview);
+
+                        XMLString = writeDataToString(logFormat, String.valueOf(latlon.returnLat()), String.valueOf(latlon.returnLon()), strDate, XMLString);
 
                         //show the toast
                         int duration = Toast.LENGTH_SHORT;
@@ -109,7 +117,7 @@ public class SettingsDataViewModel extends ViewModel {
             }
         };
     }
-    public void getLastKnownLocation(Context currentContext, TextView lat_textview, TextView lon_textview){
+    public LatLonPair getLastKnownLocation(Context currentContext, TextView lat_textview, TextView lon_textview){
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
         Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
@@ -119,5 +127,85 @@ public class SettingsDataViewModel extends ViewModel {
         // write the lat/lon values to a textview
         lat_textview.setText(String.valueOf((lat)));
         lon_textview.setText(String.valueOf((lon)));
+
+        return new LatLonPair(lat, lon);
+    }
+
+    public String startXMLString(String logFormat) {
+        String inputXMLString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n";
+
+        switch (logFormat) {
+            case "gpx":
+                inputXMLString = inputXMLString + "\t<gpx version=\"1.1\" creator=\"Xcode\">\n";
+                break;
+            case "kml":
+                inputXMLString = inputXMLString + "\t<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n";
+                inputXMLString = inputXMLString + "\t\t<Placemark>\n";
+                inputXMLString = inputXMLString + "\t\t\t<name>iOS Test Path</name>\n";
+                inputXMLString = inputXMLString + "\t\t\t<LineString>\n";
+                inputXMLString = inputXMLString + "\t\t\t\t<tessellate>1</tessellate>\n";
+                inputXMLString = inputXMLString + "\t\t\t\t<coordinates>\n";
+                break;
+            default:
+                break;
+            }
+
+        return inputXMLString;
+    }
+
+    public String writeDataToString(String logFormat, String lat, String lon, String utcTimeZoneStr, String stringName) {
+        String inputXMLString = stringName;
+
+        switch (logFormat) {
+            case "gpx":
+                inputXMLString = inputXMLString + "\t\t<wpt lat=\"" + lat + "\" lon=\"" + lon + "\"></wpt>\n";
+                inputXMLString = inputXMLString + "\t\t<time>" + utcTimeZoneStr + "</time>\n";
+                //inputXMLString = inputXMLString + "\t\t<metadata><keywords>" + stateStr + "</keywords></metadata>\n";
+                break;
+            case "kml":
+                inputXMLString = inputXMLString + "\t\t\t\t\t" + lon + "," + lat + "," + "0\n";
+                break;
+            default:
+                break;
+        }
+        return inputXMLString;
+    }
+
+    // Finalize the XML String
+    public String finishDataWriteToString(String logFormat, String stringName) {
+        String inputXMLString = stringName;
+
+        switch (logFormat) {
+            case "gpx":
+                inputXMLString = inputXMLString + "\t</gpx>\n" + "</xml>";
+                break;
+            case "kml":
+                inputXMLString = inputXMLString + "\t\t\t\t</coordinates>\n";
+                inputXMLString = inputXMLString + "\t\t\t</LineString>\n";
+                inputXMLString = inputXMLString + "\t\t</Placemark>\n";
+                inputXMLString = inputXMLString + "\t</kml>\n" + "</xml>";
+                break;
+            default:
+                break;
+        }
+        return inputXMLString;
+    }
+}
+
+final class LatLonPair {
+    private final double lat;
+    private final double lon;
+
+    public LatLonPair(double lat, double lon) {
+        this.lat = lat;
+        this.lon = lon;
+    }
+
+    public double returnLat() {
+        return lat;
+    }
+
+    public double returnLon() {
+        return lon;
     }
 }
