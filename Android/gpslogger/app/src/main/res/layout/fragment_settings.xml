@@ -2,37 +2,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".SettingsFragment">
 
-    <TextView
-        android:id="@+id/tv"
-        android:gravity="center_horizontal"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:weightSum="1.0">
 
-    <Spinner
-        android:id="@+id/fileformat_spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv"/>
+        <TextView
+            android:id="@+id/tv"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:textSize="32dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.22" />
 
+        <Spinner
+            android:id="@+id/fileformat_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.22"/>
 
-    <SeekBar
-        android:id="@+id/loginterval_seekbar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="26dp"
-        android:max="600"
-        android:layout_below="@+id/fileformat_spinner"/>
-    <!--android:layout_alignParentTop="true"-->
+        <SeekBar
+            android:id="@+id/loginterval_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.22"
+            android:max="600"/>
 
-    <TextView
-        android:id="@+id/loginterval_textview"
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loginterval_seekbar"/>
-
+        <TextView
+            android:id="@+id/loginterval_textview"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.22"/>
+    </LinearLayout>
 </RelativeLayout>
