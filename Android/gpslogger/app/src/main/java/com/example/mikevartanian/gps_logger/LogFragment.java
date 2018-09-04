@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,7 +18,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,6 +43,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     private Button logbutton, emailbutton;
     String email, subject, message, attachmentFile;
     Uri URI = null;
+    private FileWriter writer;
 
     private OnFragmentInteractionListener mListener;
     private SettingsDataViewModel mViewModel;
@@ -137,9 +142,8 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                         filename = filename + strDate + ".kml";
                     }
 
-                    writeToFile(getActivity(), mViewModel.XMLString,filename);
-
-                    emailFile();
+                    // Write the data string to a file and email it
+                    emailFile(writeToFile(getActivity(), mViewModel.XMLString, filename));
 
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(getActivity(), "Logs Emailed", duration);
@@ -193,18 +197,30 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         mViewModel.XMLString = mViewModel.finishDataWriteToString(mViewModel.logFormat, mViewModel.XMLString);
     }
 
-    private void writeToFile(Context context, String data, String filename) {
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
-            outputStreamWriter.write(data);
-            outputStreamWriter.close();
+    private File writeToFile(Context context, String data, String filename) {
+        File file = null;
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Check permission
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, SettingsDataViewModel.REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSIONS);
+        } else {
+            try {
+                file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
+
+                writer = new FileWriter(file);
+                writer.write(data);
+                writer.close();
+                Toast.makeText(getActivity(), "Temporarily saved contents in " + file.getPath(), Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                Toast.makeText(getActivity(), "Unable create temp file. Check logcat for stackTrace", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+            return file;
         }
-        catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+        return file;
     }
 
-    private void emailFile() {
+    private void emailFile(File fileToSend) {
         try {
             email = "mikev@digital2go.com";
             subject = "Android Device GPS Logs";
@@ -220,6 +236,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                 emailIntent.putExtra(Intent.EXTRA_STREAM, URI);
             }
             emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+            emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + fileToSend.getAbsoluteFile()));
 
             this.startActivity(Intent.createChooser(emailIntent,
                     "Sending email..."));

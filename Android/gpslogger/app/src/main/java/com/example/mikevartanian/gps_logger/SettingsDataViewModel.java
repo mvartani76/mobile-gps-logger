@@ -19,6 +19,7 @@ import java.util.TimerTask;
 public class SettingsDataViewModel extends ViewModel {
 
     public static final int REQUEST_LOCATION_PERMISSIONS = 1234;
+    public static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSIONS = 2345;
     public String logFormat = "gpx";
     public int logInterval = 300;
     public String logMethod = "Time";
