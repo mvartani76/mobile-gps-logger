@@ -13,6 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,7 +97,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.log_button:
-                final int tagStatus = (Integer) view.getTag();
+                int tagStatus = (Integer) view.getTag();
                 if (tagStatus == 1) {
                     logbutton.setText("Stop Logging");
                     view.setTag(0);
@@ -105,6 +111,33 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.email_button:
+                // Get the state of the log button
+                // We only want to email the logs after the app has stopped logging data
+                tagStatus = mViewModel.getLogButtonState();
+                if (tagStatus == 1) {
+
+                    //get the current timeStamp
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmm", Locale.US);
+                    simpleDateFormat.setTimeZone(TimeZone.getDefault());
+                    final String strDate = simpleDateFormat.format(calendar.getTime());
+
+                    String filename = "log";
+                    if (mViewModel.getLogFormat() == "gpx") {
+                        filename = filename + strDate + ".gpx";
+                    } else if (mViewModel.getLogFormat() == "kml") {
+                        filename = filename + strDate + ".kml";
+                    }
+
+
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(getActivity(), "Logs Emailed", duration);
+                    toast.show();
+                } else {
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(getActivity(), "Stop Logs First", duration);
+                    toast.show();
+                }
                 break;
             default:
                 break;
