@@ -2,6 +2,8 @@ package com.example.mikevartanian.gps_logger;
 
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,10 +17,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static android.provider.CalendarContract.CalendarCache.URI;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +37,8 @@ import java.util.TimeZone;
 public class LogFragment extends Fragment implements View.OnClickListener {
     private TextView tv, interval_label, interval_value, lat_value, lon_value;
     private Button logbutton, emailbutton;
+    String email, subject, message, attachmentFile;
+    Uri URI = null;
 
     private OnFragmentInteractionListener mListener;
     private SettingsDataViewModel mViewModel;
@@ -129,6 +137,9 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                         filename = filename + strDate + ".kml";
                     }
 
+                    writeToFile(getActivity(), mViewModel.XMLString,filename);
+
+                    emailFile();
 
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(getActivity(), "Logs Emailed", duration);
@@ -181,4 +192,40 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         mViewModel.stoptimertask(getView());
         mViewModel.XMLString = mViewModel.finishDataWriteToString(mViewModel.logFormat, mViewModel.XMLString);
     }
+
+    private void writeToFile(Context context, String data, String filename) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    private void emailFile() {
+        try {
+            email = "mikev@digital2go.com";
+            subject = "Android Device GPS Logs";
+            message = "Please see attached log file.";
+
+            final Intent emailIntent = new Intent(
+                    android.content.Intent.ACTION_SEND);
+            emailIntent.setType("plain/text");
+            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
+            new String[] { email });
+            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+            if (URI != null) {
+                emailIntent.putExtra(Intent.EXTRA_STREAM, URI);
+            }
+            emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+
+            this.startActivity(Intent.createChooser(emailIntent,
+                    "Sending email..."));
+        } catch (Throwable t) {
+            Toast.makeText(getActivity(), "Request failed try again: " + t.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
 }
+
