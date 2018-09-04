@@ -245,4 +245,3 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         }
     }
 }
-
