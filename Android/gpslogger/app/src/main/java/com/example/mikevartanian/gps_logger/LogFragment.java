@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -91,6 +92,13 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         lat_value = (TextView) view.findViewById(R.id.lat_value);
         lon_value = (TextView) view.findViewById(R.id.lon_value);
 
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Check permission
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, SettingsDataViewModel.REQUEST_LOCATION_PERMISSIONS);
+        } else {
+            LatLonPair latlon = mViewModel.getLastKnownLocation(getActivity(), lat_value, lon_value);
+        }
+        
         int tagStatus = mViewModel.getLogButtonState();
 
         logbutton.setTag(tagStatus);
