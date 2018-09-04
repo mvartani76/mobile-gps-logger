@@ -116,6 +116,20 @@ public class SettingsFragment extends Fragment {
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
                 Log.i(TAG, "spinner.pos = " + pos);
+
+                // Set the log format based on the spinner position
+                // Do not like using integers for gpx/kml but not sure how to get
+                // the string array locations yet
+                switch (pos) {
+                    case 0:
+                        mViewModel.setLogFormat("gpx");
+                        break;
+                    case 1:
+                        mViewModel.setLogFormat("kml");
+                        break;
+                    default:
+                        break;
+                }
             }
 
             @Override
