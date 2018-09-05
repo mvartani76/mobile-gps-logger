@@ -98,7 +98,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         } else {
             LatLonPair latlon = mViewModel.getLastKnownLocation(getActivity(), lat_value, lon_value);
         }
-        
+
         int tagStatus = mViewModel.getLogButtonState();
 
         logbutton.setTag(tagStatus);
