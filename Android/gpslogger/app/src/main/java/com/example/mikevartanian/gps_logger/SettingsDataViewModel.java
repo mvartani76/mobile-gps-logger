@@ -1,13 +1,20 @@
 package com.example.mikevartanian.gps_logger;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -45,7 +52,7 @@ public class SettingsDataViewModel extends ViewModel {
     // As the slider/datamodel stores in seconds, need
     // to multiply by 1000
     public int getLogInterval() {
-        return this.logInterval*1000;
+        return this.logInterval * 1000;
     }
 
     public String getLogMethod() {
@@ -118,9 +125,32 @@ public class SettingsDataViewModel extends ViewModel {
             }
         };
     }
-    public LatLonPair getLastKnownLocation(Context currentContext, TextView lat_textview, TextView lon_textview){
+
+    @SuppressLint("MissingPermission")
+    public LatLonPair getLastKnownLocation(Context currentContext, TextView lat_textview, TextView lon_textview) {
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
+
+
+        locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+                    }
+
+                    @Override
+                    public void onLocationChanged(final Location location) {
+                    }
+                });
+
         Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
         double lat = lastKnownLocation.getLatitude();
         double lon = lastKnownLocation.getLongitude();
