@@ -6,12 +6,18 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.SeekBar;
@@ -31,6 +37,7 @@ public class SettingsFragment extends Fragment {
     private TextView tv;
     private Spinner spinner;
     private SeekBar logIntervalSeekBar;
+    private EditText logIntervalEditText;
     private TextView logIntervalTextView;
     private SettingsDataViewModel mViewModel;
 
@@ -67,7 +74,8 @@ public class SettingsFragment extends Fragment {
         tv.setText("Settings");
 
         logIntervalSeekBar = (SeekBar) view.findViewById(R.id.loginterval_seekbar);
-        logIntervalTextView = (TextView) view.findViewById(R.id.loginterval_textview);
+        logIntervalEditText = (EditText) view.findViewById(R.id.loginterval_edittext);
+        logIntervalTextView = (TextView) view.findViewById(R.id.loginterval_textview_label);
 
         Log.i(TAG, "SettingsFragment OnCreateView Called");
 
@@ -83,7 +91,7 @@ public class SettingsFragment extends Fragment {
         mViewModel = ViewModelProviders.of(getActivity()).get(SettingsDataViewModel.class);
 
         // Initialize the textview with '0'.
-        logIntervalTextView.setText("Covered: " + logIntervalSeekBar.getProgress() + "/" + logIntervalSeekBar.getMax());
+        logIntervalEditText.setText(String.valueOf(logIntervalSeekBar.getProgress()));
 
         logIntervalSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             int progress = 0;
@@ -101,13 +109,11 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                logIntervalTextView.setText("Covered: " + progress + "/" + logIntervalSeekBar.getMax());
+                logIntervalEditText.setText(String.valueOf(progress));
                 Toast.makeText(getActivity(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
                 mViewModel.setLogInterval(progress);
             }
         });
-
-
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             private static final String TAG = "MCV Logs";
@@ -139,8 +145,36 @@ public class SettingsFragment extends Fragment {
 
         });
 
+        logIntervalEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        logIntervalEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    logIntervalSeekBar.setProgress(Integer.parseInt((logIntervalEditText.getText().toString())));
+
+                    Activity kBActivity = getActivity();
+                    View view = kBActivity.getCurrentFocus();
+                    //If no view currently has focus, create a new one, just so we can grab a window token from it
+                    if (view == null) {
+                        view = new View(kBActivity);
+                    }
+
+                    InputMethodManager imm = (InputMethodManager) kBActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
         return view;
     }
+
+
+
 
     /**
      * This interface must be implemented by activities that contain this

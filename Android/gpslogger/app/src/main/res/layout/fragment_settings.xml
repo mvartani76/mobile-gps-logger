@@ -32,11 +32,33 @@
             android:layout_weight="0.22"
             android:max="600"/>
 
-        <TextView
-            android:id="@+id/loginterval_textview"
-            android:gravity="center"
+        <LinearLayout
+            android:id="@+id/settings_interval_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.22"/>
+            android:layout_weight="0.22"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/loginterval_textview_label"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Interval (s) = "
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/loginterval_edittext"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:imeActionLabel="Done"
+                android:singleLine="true"/>
+
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
