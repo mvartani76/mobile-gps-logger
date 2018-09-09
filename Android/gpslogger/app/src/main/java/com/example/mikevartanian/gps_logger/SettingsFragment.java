@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +19,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.SeekBar;
@@ -40,6 +43,9 @@ public class SettingsFragment extends Fragment {
     private EditText logIntervalEditText;
     private TextView logIntervalTextView;
     private SettingsDataViewModel mViewModel;
+    private RadioGroup dataLogIntervalGroup;
+    private RadioButton timeIntMethodButton;
+    private RadioButton distanceIntMethodButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -79,6 +85,10 @@ public class SettingsFragment extends Fragment {
 
         Log.i(TAG, "SettingsFragment OnCreateView Called");
 
+        dataLogIntervalGroup = (RadioGroup) view.findViewById(R.id.radiogroup_loginterval);
+        timeIntMethodButton = (RadioButton) view.findViewById(R.id.radio_time);
+        distanceIntMethodButton = (RadioButton) view.findViewById(R.id.radio_distance);
+
         spinner = (Spinner) view.findViewById(R.id.fileformat_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
@@ -89,6 +99,20 @@ public class SettingsFragment extends Fragment {
         spinner.setAdapter(adapter);
 
         mViewModel = ViewModelProviders.of(getActivity()).get(SettingsDataViewModel.class);
+
+        dataLogIntervalGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch(checkedId) {
+                    case R.id.radio_time:
+                        Toast.makeText(getActivity(), "Time",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.radio_distance:
+                        Toast.makeText(getActivity(), "Distance",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
 
         // Initialize the textview with '0'.
         logIntervalEditText.setText(String.valueOf(logIntervalSeekBar.getProgress()));
@@ -172,9 +196,6 @@ public class SettingsFragment extends Fragment {
 
         return view;
     }
-
-
-
 
     /**
      * This interface must be implemented by activities that contain this
