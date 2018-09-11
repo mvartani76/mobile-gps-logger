@@ -106,11 +106,11 @@ public class SettingsFragment extends Fragment {
                 switch(checkedId) {
                     case R.id.radio_time:
                         mViewModel.setLogFormat("Time");
-                        Toast.makeText(getActivity(), "Time",Toast.LENGTH_SHORT).show();
+                        logIntervalTextView.setText("Interval (s) = ");
                         break;
                     case R.id.radio_distance:
                         mViewModel.setLogFormat("Distance");
-                        Toast.makeText(getActivity(), "Distance",Toast.LENGTH_SHORT).show();
+                        logIntervalTextView.setText("Interval (m) = ");
                         break;
                 }
             }
