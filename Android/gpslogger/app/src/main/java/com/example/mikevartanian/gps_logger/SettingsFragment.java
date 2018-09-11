@@ -105,9 +105,11 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 switch(checkedId) {
                     case R.id.radio_time:
+                        mViewModel.setLogFormat("Time");
                         Toast.makeText(getActivity(), "Time",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.radio_distance:
+                        mViewModel.setLogFormat("Distance");
                         Toast.makeText(getActivity(), "Distance",Toast.LENGTH_SHORT).show();
                         break;
                 }
