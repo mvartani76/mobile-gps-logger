@@ -147,7 +147,7 @@ public class SettingsDataViewModel extends ViewModel {
     @SuppressLint("MissingPermission")
     public LatLonPair getLastKnownLocation(Context currentContext, TextView lat_textview, TextView lon_textview) {
         // Acquire a reference to the system Location Manager
-        LocationManager locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
 
 /*
         locationManager.requestLocationUpdates(
