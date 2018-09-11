@@ -100,6 +100,15 @@ public class SettingsFragment extends Fragment {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
+        spinner.setSelection(mViewModel.getformatSpinnerState());
+
+        // set radio button state
+        if (mViewModel.getLogMethod() == "Time") {
+            dataLogIntervalGroup.check(R.id.radio_time);
+        } else {
+            dataLogIntervalGroup.check(R.id.radio_distance);
+        }
+
         dataLogIntervalGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -149,6 +158,9 @@ public class SettingsFragment extends Fragment {
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
                 Log.i(TAG, "spinner.pos = " + pos);
+
+                // Set the spinner state
+                mViewModel.setformatSpinnerState(pos);
 
                 // Set the log format based on the spinner position
                 // Do not like using integers for gpx/kml but not sure how to get

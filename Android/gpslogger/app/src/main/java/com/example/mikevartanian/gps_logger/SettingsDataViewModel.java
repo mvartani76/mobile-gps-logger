@@ -31,6 +31,7 @@ public class SettingsDataViewModel extends ViewModel {
     public String logFormat = "gpx";
     public int logInterval = 300;
     public String logMethod = "Time";
+    public int formatSpinnerState = 0;
     public int logButtonState = 1;
 
     public String XMLString = "";
@@ -49,6 +50,10 @@ public class SettingsDataViewModel extends ViewModel {
 
     public String getLogFormat() {
         return this.logFormat;
+    }
+
+    public int getformatSpinnerState() {
+        return this.formatSpinnerState;
     }
 
     // If logMethod = Time, get the logInterval time in milliseconds
@@ -73,6 +78,10 @@ public class SettingsDataViewModel extends ViewModel {
 
     public void setLogFormat(String logFormat) {
         this.logFormat = logFormat;
+    }
+
+    public void setformatSpinnerState(int formatSpinnerState) {
+        this.formatSpinnerState = formatSpinnerState;
     }
 
     public void setLogInterval(int logInterval) {
