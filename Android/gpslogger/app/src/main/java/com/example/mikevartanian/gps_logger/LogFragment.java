@@ -196,12 +196,21 @@ public class LogFragment extends Fragment implements View.OnClickListener {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, SettingsDataViewModel.REQUEST_LOCATION_PERMISSIONS);
         } else {
             mViewModel.XMLString = mViewModel.startXMLString(mViewModel.logFormat);
-            mViewModel.startTimer((long) mViewModel.getLogInterval(), getActivity(), lat_value, lon_value);
+            if (mViewModel.getLogFormat() == "Time") {
+                mViewModel.startTimer((long) mViewModel.getLogInterval(), getActivity(), lat_value, lon_value);
+            }
+            else {
+                mViewModel.startLocationUpdates(getActivity(), mViewModel.getLogInterval(), lat_value, lon_value);
+            }
         }
     }
 
     public void stopLogging() {
-        mViewModel.stoptimertask(getView());
+        if (mViewModel.getLogFormat() == "Time") {
+            mViewModel.stoptimertask(getView());
+        } else {
+
+        }
         mViewModel.XMLString = mViewModel.finishDataWriteToString(mViewModel.logFormat, mViewModel.XMLString);
     }
 
