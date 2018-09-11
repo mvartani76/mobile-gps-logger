@@ -51,11 +51,16 @@ public class SettingsDataViewModel extends ViewModel {
         return this.logFormat;
     }
 
-    // Get the logInterval time in milliseconds
+    // If logMethod = Time, get the logInterval time in milliseconds
     // As the slider/datamodel stores in seconds, need
     // to multiply by 1000
     public int getLogInterval() {
-        return this.logInterval * 1000;
+        if (this.logMethod == "Time") {
+            return this.logInterval * 1000;
+        }
+        else {
+            return this.logInterval;
+        }
     }
 
     public String getLogMethod() {
