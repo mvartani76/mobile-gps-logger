@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -131,7 +132,7 @@ public class SettingsDataViewModel extends ViewModel {
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
 
-
+/*
         locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
                     @Override
@@ -149,7 +150,7 @@ public class SettingsDataViewModel extends ViewModel {
                     @Override
                     public void onLocationChanged(final Location location) {
                     }
-                });
+                }); */
 
         Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
         double lat = lastKnownLocation.getLatitude();
@@ -160,6 +161,45 @@ public class SettingsDataViewModel extends ViewModel {
         lon_textview.setText(String.valueOf((lon)));
 
         return new LatLonPair(lat, lon);
+    }
+
+    public void startLocationUpdates(final Context currentContext, long logInterval, TextView lat_textview, TextView lon_textview) {
+        String TAG = "Start Location Update";
+        // Acquire a reference to the system Location Manager
+        LocationManager locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
+
+        try {
+            //currentContext.checkPermission()
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 1000, 1, new LocationListener() {
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+                        }
+
+                        @Override
+                        public void onLocationChanged(final Location location) {
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(currentContext, "test", duration);
+                            toast.show();
+                        }
+                    });
+        } catch (java.lang.SecurityException ex) {
+            Log.i(TAG, "fail to request location update, ignore", ex);
+        } catch (IllegalArgumentException ex) {
+            Log.d(TAG, "network provider does not exist, " + ex.getMessage());
+        }
+    }
+
+    public void stopLocationUpdates(final Context currentContext, LocationManager locationManager) {
+        locationManager.removeUpdates(this);
     }
 
     public String startXMLString(String logFormat) {
