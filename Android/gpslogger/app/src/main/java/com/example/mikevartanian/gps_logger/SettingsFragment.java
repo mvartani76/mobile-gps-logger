@@ -105,11 +105,11 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 switch(checkedId) {
                     case R.id.radio_time:
-                        mViewModel.setLogFormat("Time");
+                        mViewModel.setLogMethod("Time");
                         logIntervalTextView.setText("Interval (s) = ");
                         break;
                     case R.id.radio_distance:
-                        mViewModel.setLogFormat("Distance");
+                        mViewModel.setLogMethod("Distance");
                         logIntervalTextView.setText("Interval (m) = ");
                         break;
                 }
