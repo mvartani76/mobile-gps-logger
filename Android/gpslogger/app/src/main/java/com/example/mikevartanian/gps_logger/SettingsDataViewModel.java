@@ -54,8 +54,8 @@ public class SettingsDataViewModel extends ViewModel {
     // If logMethod = Time, get the logInterval time in milliseconds
     // As the slider/datamodel stores in seconds, need
     // to multiply by 1000
-    public int getLogInterval() {
-        if (this.logMethod == "Time") {
+    public int getLogInterval(String units) {
+        if (units == "msec") {
             return this.logInterval * 1000;
         }
         else {
@@ -87,6 +87,7 @@ public class SettingsDataViewModel extends ViewModel {
         this.logButtonState = logButtonState;
     }
 
+    // logInterval should be in milliseconds as timer.schedule requires milliseconds
     public void startTimer(long logInterval, Context currentActivity, TextView lat_textview, TextView lon_textview) {
         //set a new Timer
         timer = new Timer();

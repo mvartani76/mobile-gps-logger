@@ -79,6 +79,8 @@ public class SettingsFragment extends Fragment {
         tv = (TextView) view.findViewById(R.id.tv);
         tv.setText("Settings");
 
+        mViewModel = ViewModelProviders.of(getActivity()).get(SettingsDataViewModel.class);
+
         logIntervalSeekBar = (SeekBar) view.findViewById(R.id.loginterval_seekbar);
         logIntervalEditText = (EditText) view.findViewById(R.id.loginterval_edittext);
         logIntervalTextView = (TextView) view.findViewById(R.id.loginterval_textview_label);
@@ -98,8 +100,6 @@ public class SettingsFragment extends Fragment {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
-        mViewModel = ViewModelProviders.of(getActivity()).get(SettingsDataViewModel.class);
-
         dataLogIntervalGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -116,9 +116,10 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // Initialize the textview with '0'.
+        // Initialize the seekbar progress and textview with logInterval
+        Toast.makeText(getActivity(), String.valueOf(mViewModel.getLogInterval("sec")), Toast.LENGTH_SHORT).show();
+        logIntervalSeekBar.setProgress(mViewModel.getLogInterval("sec"));
         logIntervalEditText.setText(String.valueOf(logIntervalSeekBar.getProgress()));
-
         logIntervalSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             int progress = 0;
             @Override

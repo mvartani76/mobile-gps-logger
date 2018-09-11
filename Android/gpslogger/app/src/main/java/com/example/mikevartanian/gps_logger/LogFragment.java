@@ -82,7 +82,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         interval_value = (TextView) view.findViewById(R.id.interval_value);
 
         mViewModel = ViewModelProviders.of(getActivity()).get(SettingsDataViewModel.class);
-        interval_value.setText(String.valueOf(mViewModel.getLogInterval()));
+        interval_value.setText(String.valueOf(mViewModel.getLogInterval("sec")));
 
         logbutton = (Button) view.findViewById(R.id.log_button);
         logbutton.setOnClickListener(this);
@@ -203,10 +203,11 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         } else {
             mViewModel.XMLString = mViewModel.startXMLString(mViewModel.logFormat);
             if (mViewModel.getLogFormat() == "Time") {
-                mViewModel.startTimer((long) mViewModel.getLogInterval(), getActivity(), lat_value, lon_value);
+                // startTimer requires logInterval to be in milliseconds
+                mViewModel.startTimer((long) mViewModel.getLogInterval("msec"), getActivity(), lat_value, lon_value);
             }
             else {
-                mViewModel.startLocationUpdates(getActivity(), mViewModel.getLogInterval(), lat_value, lon_value);
+                mViewModel.startLocationUpdates(getActivity(), mViewModel.getLogInterval("meters"), lat_value, lon_value);
             }
         }
     }
