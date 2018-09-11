@@ -37,6 +37,8 @@ public class SettingsDataViewModel extends ViewModel {
     public LatLonPair latlon;
 
     String locationProvider = LocationManager.NETWORK_PROVIDER;
+    public static LocationManager locationManager;
+    public static LocationListener locationListener;
 
     Timer timer;
     TimerTask timerTask;
@@ -163,11 +165,31 @@ public class SettingsDataViewModel extends ViewModel {
         return new LatLonPair(lat, lon);
     }
 
-    public void startLocationUpdates(final Context currentContext, long logInterval, TextView lat_textview, TextView lon_textview) {
+    public void startLocationUpdates(final Context currentContext, long logInterval, final TextView lat_textview, final TextView lon_textview) {
         String TAG = "Start Location Update";
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
 
+
+        //get the current timeStamp
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        final String strDate = simpleDateFormat.format(calendar.getTime());
+
+
+
+
+       /*
+        LocationListener locationListener = new MyLocationListener();
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
+        } catch (java.lang.SecurityException ex) {
+            Log.i(TAG, "fail to request location update, ignore", ex);
+        } catch (IllegalArgumentException ex) {
+            Log.d(TAG, "network provider does not exist, " + ex.getMessage());
+        }
+*/
         try {
             //currentContext.checkPermission()
             locationManager.requestLocationUpdates(
@@ -185,10 +207,17 @@ public class SettingsDataViewModel extends ViewModel {
                         }
 
                         @Override
-                        public void onLocationChanged(final Location location) {
+                        public void onLocationChanged(Location location) {
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(currentContext, "test", duration);
                             toast.show();
+
+                            // write the lat/lon values to a textview
+                            lat_textview.setText(String.valueOf((location.getLatitude())));
+                            lon_textview.setText(String.valueOf((location.getLongitude())));
+
+                            XMLString = writeDataToString(logFormat, String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), strDate, XMLString);
+                            locationListener = this;
                         }
                     });
         } catch (java.lang.SecurityException ex) {
@@ -198,8 +227,8 @@ public class SettingsDataViewModel extends ViewModel {
         }
     }
 
-    public void stopLocationUpdates(final Context currentContext, LocationManager locationManager) {
-        locationManager.removeUpdates(this);
+    public void stopLocationUpdates() {
+        locationManager.removeUpdates(locationListener);
     }
 
     public String startXMLString(String logFormat) {
@@ -280,3 +309,34 @@ final class LatLonPair {
         return lon;
     }
 }
+/*
+class MyLocationListener implements LocationListener {
+
+    @Override
+    public void onLocationChanged(Location location) {
+        double lat = location.getLatitude();
+        double lon = location.getLongitude();
+
+        //LogFragment.ListenerCallback
+
+        // write the lat/lon values to a textview
+        //lat_textview.setText(String.valueOf((lat)));
+        //lon_textview.setText(String.valueOf((lon)));
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+}
+*/

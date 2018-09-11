@@ -48,6 +48,11 @@ public class LogFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private SettingsDataViewModel mViewModel;
+    private ListenerCallback callback;
+
+    public interface ListenerCallback {
+
+    }
 
     public LogFragment() {
         // Required empty public constructor
@@ -209,7 +214,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         if (mViewModel.getLogFormat() == "Time") {
             mViewModel.stoptimertask(getView());
         } else {
-
+            mViewModel.stopLocationUpdates();
         }
         mViewModel.XMLString = mViewModel.finishDataWriteToString(mViewModel.logFormat, mViewModel.XMLString);
     }
