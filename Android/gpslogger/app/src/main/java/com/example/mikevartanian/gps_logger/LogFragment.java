@@ -48,11 +48,6 @@ public class LogFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private SettingsDataViewModel mViewModel;
-    private ListenerCallback callback;
-
-    public interface ListenerCallback {
-
-    }
 
     public LogFragment() {
         // Required empty public constructor
@@ -105,6 +100,12 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         }
 
         int tagStatus = mViewModel.getLogButtonState();
+
+        if (mViewModel.getLogMethod() == "Time") {
+            interval_label.setText("Interval (s) = ");
+        } else {
+            interval_label.setText("Interval (m) = ");
+        }
 
         logbutton.setTag(tagStatus);
         if (tagStatus == 1) {
