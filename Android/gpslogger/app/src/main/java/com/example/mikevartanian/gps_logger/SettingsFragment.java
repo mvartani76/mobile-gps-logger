@@ -151,7 +151,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-
         // Initialize the seekbar progress and textview with logInterval
         Toast.makeText(getActivity(), String.valueOf(mViewModel.getLogInterval("sec")), Toast.LENGTH_SHORT).show();
         logIntervalSeekBar.setProgress(mViewModel.getLogInterval("sec"));
@@ -161,19 +160,16 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                Toast.makeText(getActivity(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
                 mViewModel.setLogInterval(progress);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getActivity(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 logIntervalEditText.setText(String.valueOf(progress));
-                Toast.makeText(getActivity(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
                 mViewModel.setLogInterval(progress);
             }
         });
