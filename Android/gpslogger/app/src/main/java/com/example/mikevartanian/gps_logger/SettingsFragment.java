@@ -158,8 +158,13 @@ public class SettingsFragment extends Fragment {
         logIntervalSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             int progress = 0;
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
+            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
+                // Set the minimum seekBar progress value to 1
+                if (progressValue < 1) {
+                    progressValue = 1;
+                    seekBar.setProgress(progressValue);
+                }
+                progress = progressValue;
                 mViewModel.setLogInterval(progress);
             }
 
@@ -212,8 +217,15 @@ public class SettingsFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    int editTextValueInt = Integer.parseInt((logIntervalEditText.getText().toString()));
 
-                    logIntervalSeekBar.setProgress(Integer.parseInt((logIntervalEditText.getText().toString())));
+                    // limit the minimum value to 1
+                    if (editTextValueInt < 1) {
+                        editTextValueInt = 1;
+                        v.setText("1");
+                    }
+
+                    logIntervalSeekBar.setProgress(editTextValueInt);
 
                     Activity kBActivity = getActivity();
                     View view = kBActivity.getCurrentFocus();
