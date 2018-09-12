@@ -3,6 +3,7 @@ package com.example.mikevartanian.gps_logger;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -43,9 +44,9 @@ public class SettingsFragment extends Fragment {
     private EditText logIntervalEditText;
     private TextView logIntervalTextView;
     private SettingsDataViewModel mViewModel;
-    private RadioGroup dataLogIntervalGroup;
-    private RadioButton timeIntMethodButton;
-    private RadioButton distanceIntMethodButton;
+    private RadioGroup dataLogIntervalGroup, logProviderGroup;
+    private RadioButton timeIntMethodButton, distanceIntMethodButton;
+    private RadioButton networkProviderButton, gpsProviderButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -87,6 +88,10 @@ public class SettingsFragment extends Fragment {
 
         Log.i(TAG, "SettingsFragment OnCreateView Called");
 
+        logProviderGroup = (RadioGroup) view.findViewById(R.id.radiogroup_loglocationprovider);
+        networkProviderButton = (RadioButton) view.findViewById(R.id.radio_provider_network);
+        gpsProviderButton = (RadioButton) view.findViewById(R.id.radio_provider_gps);
+
         dataLogIntervalGroup = (RadioGroup) view.findViewById(R.id.radiogroup_loginterval);
         timeIntMethodButton = (RadioButton) view.findViewById(R.id.radio_time);
         distanceIntMethodButton = (RadioButton) view.findViewById(R.id.radio_distance);
@@ -109,6 +114,13 @@ public class SettingsFragment extends Fragment {
             dataLogIntervalGroup.check(R.id.radio_distance);
         }
 
+        // set radio button state
+        if (mViewModel.getLogLocationProvider() == LocationManager.NETWORK_PROVIDER) {
+            logProviderGroup.check(R.id.radio_provider_network);
+        } else {
+            logProviderGroup.check(R.id.radio_provider_gps);
+        }
+
         dataLogIntervalGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -124,6 +136,21 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
+
+        logProviderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch(checkedId) {
+                    case R.id.radio_provider_network:
+                        mViewModel.setLogLocationProvider(LocationManager.NETWORK_PROVIDER);
+                        break;
+                    case R.id.radio_provider_gps:
+                        mViewModel.setLogLocationProvider(LocationManager.GPS_PROVIDER);
+                        break;
+                }
+            }
+        });
+
 
         // Initialize the seekbar progress and textview with logInterval
         Toast.makeText(getActivity(), String.valueOf(mViewModel.getLogInterval("sec")), Toast.LENGTH_SHORT).show();

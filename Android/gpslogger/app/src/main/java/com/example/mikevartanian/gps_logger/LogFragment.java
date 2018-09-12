@@ -207,7 +207,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                 mViewModel.startTimer((long) mViewModel.getLogInterval("msec"), getActivity(), lat_value, lon_value);
             }
             else {
-                mViewModel.startLocationUpdates(getActivity(), mViewModel.getLogInterval("meters"), lat_value, lon_value);
+                mViewModel.startLocationUpdates(getActivity(), mViewModel.getLogLocationProvider(), mViewModel.getLogInterval("meters"), lat_value, lon_value);
             }
         }
     }

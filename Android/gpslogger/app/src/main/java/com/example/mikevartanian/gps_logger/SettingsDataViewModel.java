@@ -33,13 +33,20 @@ public class SettingsDataViewModel extends ViewModel {
     public String logMethod = "Time";
     public int formatSpinnerState = 0;
     public int logButtonState = 1;
+    public String logLocationProvider = LocationManager.NETWORK_PROVIDER;
 
     public String XMLString = "";
     public LatLonPair latlon;
 
-    String locationProvider = LocationManager.NETWORK_PROVIDER;
     public static LocationManager locationManager;
     public static LocationListener locationListener;
+
+    // flag for GPS status
+    boolean isGPSEnabled = false;
+
+    // flag for network status
+    boolean isNetworkEnabled = false;
+
 
     Timer timer;
     TimerTask timerTask;
@@ -76,6 +83,10 @@ public class SettingsDataViewModel extends ViewModel {
         return this.logButtonState;
     }
 
+    public String getLogLocationProvider() {
+        return this.logLocationProvider;
+    }
+
     public void setLogFormat(String logFormat) {
         this.logFormat = logFormat;
     }
@@ -94,6 +105,10 @@ public class SettingsDataViewModel extends ViewModel {
 
     public void setLogButtonState(int logButtonState) {
         this.logButtonState = logButtonState;
+    }
+
+    public void setLogLocationProvider(String logLocationProvider) {
+        this.logLocationProvider = logLocationProvider;
     }
 
     // logInterval should be in milliseconds as timer.schedule requires milliseconds
@@ -148,30 +163,23 @@ public class SettingsDataViewModel extends ViewModel {
     public LatLonPair getLastKnownLocation(Context currentContext, TextView lat_textview, TextView lon_textview) {
         // Acquire a reference to the system Location Manager
         locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
+        double lat = 0, lon = 0;
 
-/*
-        locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-                    }
+        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-                    @Override
-                    public void onProviderEnabled(String provider) {
-                    }
+        if (locationManager.isProviderEnabled(logLocationProvider)) {
 
-                    @Override
-                    public void onProviderDisabled(String provider) {
-                    }
 
-                    @Override
-                    public void onLocationChanged(final Location location) {
-                    }
-                }); */
+                Location lastKnownLocation = locationManager.getLastKnownLocation(logLocationProvider);
 
-        Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-        double lat = lastKnownLocation.getLatitude();
-        double lon = lastKnownLocation.getLongitude();
+                if (lastKnownLocation == null) {
+                    lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+
+                lat = lastKnownLocation.getLatitude();
+                lon = lastKnownLocation.getLongitude();
+                }
 
         // write the lat/lon values to a textview
         lat_textview.setText(String.valueOf((lat)));
@@ -180,7 +188,7 @@ public class SettingsDataViewModel extends ViewModel {
         return new LatLonPair(lat, lon);
     }
 
-    public void startLocationUpdates(final Context currentContext, long logInterval, final TextView lat_textview, final TextView lon_textview) {
+    public void startLocationUpdates(final Context currentContext, String logLocationProvider, long logInterval, final TextView lat_textview, final TextView lon_textview) {
         String TAG = "Start Location Update";
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
@@ -208,7 +216,7 @@ public class SettingsDataViewModel extends ViewModel {
         try {
             //currentContext.checkPermission()
             locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, 1000, 1, new LocationListener() {
+                    logLocationProvider, 1000, logInterval, new LocationListener() {
                         @Override
                         public void onStatusChanged(String provider, int status, Bundle extras) {
                         }
