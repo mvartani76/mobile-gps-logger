@@ -215,7 +215,7 @@ public class SettingsDataViewModel extends ViewModel {
                         @Override
                         public void onLocationChanged(Location location) {
                             int duration = Toast.LENGTH_SHORT;
-                            Toast toast = Toast.makeText(currentContext, "test", duration);
+                            Toast toast = Toast.makeText(currentContext, strDate, duration);
                             toast.show();
 
                             // write the lat/lon values to a textview
