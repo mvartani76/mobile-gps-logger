@@ -176,7 +176,7 @@ public class SettingsDataViewModel extends ViewModel {
 
                 lat = lastKnownLocation.getLatitude();
                 lon = lastKnownLocation.getLongitude();
-                }
+        }
 
         // write the lat/lon values to a textview
         lat_textview.setText(String.valueOf((lat)));
